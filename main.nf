@@ -12,19 +12,12 @@ include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last
 include { LAST_MAFSWAP as LAST_MAFSWAP_2 } from './modules/nf-core/software/last/mafswap/main.nf'  addParams( options: ['suffix':'.06.swap'] )
 
 workflow {
-//    target = [ [ id:'target' ],
-//               file(params.test_data['sarscov2']['genome']['genome_fasta'], checkIfExists: true)
-//             ]
-
 // Turn the file name in a tuple that is appropriate input for LAST_LASTDB
 channel
     .from( params.target )
     .map { filename -> file(filename, checkIfExists: true) }
     .map { row -> [ [id:'target'], row] }
     .set { target }
-
-//    query =  [ [ id:'query' ],
-//               file(params.test_data['sarscov2']['illumina']['contigs_fasta'], checkIfExists: true) ]
 
 // Turn the sample sheet in a channel of tuples suitable for LAST_LASTAL and downstream
 channel

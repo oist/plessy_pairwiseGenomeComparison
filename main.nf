@@ -34,15 +34,15 @@ channel
     .set { query }
 
 // Align the genomes
-    LAST_LASTDB   ( target )
-    LAST_TRAIN    ( query,
-                    LAST_LASTDB.out.index.map { row -> row[1] } )
-    LAST_LASTAL   ( query,
-                    LAST_LASTDB.out.index.map { row -> row[1] },
-                    LAST_TRAIN.out.param_file.map { row -> row[1] } )
-    LAST_POSTMASK ( LAST_LASTAL.out.maf )
-    LAST_SPLIT_1    ( LAST_POSTMASK.out.maf )
-    LAST_MAFSWAP_1  ( LAST_SPLIT_1.out.maf )
-    LAST_SPLIT_2    ( LAST_MAFSWAP_1.out.maf )
-    LAST_MAFSWAP_2  ( LAST_SPLIT_2.out.maf )
+    LAST_LASTDB    ( target )
+    LAST_TRAIN     ( query,
+                     LAST_LASTDB.out.index.map { row -> row[1] } )
+    LAST_LASTAL    ( query,
+                     LAST_LASTDB.out.index.map { row -> row[1] },
+                     LAST_TRAIN.out.param_file.map { row -> row[1] } )
+    LAST_POSTMASK  ( LAST_LASTAL.out.maf )
+    LAST_SPLIT_1   ( LAST_POSTMASK.out.maf )
+    LAST_MAFSWAP_1 ( LAST_SPLIT_1.out.maf )
+    LAST_SPLIT_2   ( LAST_MAFSWAP_1.out.maf )
+    LAST_MAFSWAP_2 ( LAST_SPLIT_2.out.maf )
 }

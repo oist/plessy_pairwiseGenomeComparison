@@ -18,7 +18,7 @@ include { LAST_DOTPLOT as LAST_DOTPLOT_4 } from './modules/nf-core/software/last
 workflow {
 // Turn the file name in a tuple that is appropriate input for LAST_LASTDB
 channel
-    .from( params.target )
+    .value( params.target )
     .map { filename -> file(filename, checkIfExists: true) }
     .map { row -> [ [id:'target'], row] }
     .set { target }

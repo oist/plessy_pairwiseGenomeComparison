@@ -27,6 +27,31 @@
 
     nextflow run ./main.nf -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
+
+## Advanced use
+
+### Override computation limits
+
+Computation resources allocated to the processe are set with standard _nf-core_
+labels in the [`nextflow.config`](./nextflow.config) file of the pipeline.  To
+override their value, create a configuration file in your local directory and
+add it to the run's configuration with the `-c` option.
+
+For instance, with file called `overrideLabels.nf` containing the following:
+
+```
+process {
+  withLabel:process_high {
+    time = 3.d
+  }
+}
+```
+
+The command `nextflow -c overrideLabels.nf run …` would set the execution time
+limit for the training and alignment (whose module declare the `process_high`
+label) to 3 days instead of the 1 hour default.
+
+
 ## Semantic versioning
 
 I will apply [semantic versioning](https://semver.org/) to this pipeline:

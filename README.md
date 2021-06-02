@@ -8,6 +8,15 @@
    alternatives, there is `YASS` for “_long-and-weak similarities_” that
    “_allow for mismatches but not gaps_”.
 
+ * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
+   the calls to `last-train` and `lastal`, like in the
+   [LAST cookbook](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst).
+
+## Fixed arguments
+
+ * `--revsym` is hardcoded the call to `last-train` as the DNA strands
+   play equivalent roles in the studied genomes.
+
 ## Test
 
 ### test remote

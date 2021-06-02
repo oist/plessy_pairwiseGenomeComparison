@@ -1,5 +1,11 @@
 # Change log
 
+## 3.0.0
+
+ - Force the score matrix to be symmetric (pass `--revsym` to `last-train`).
+ - Allow passing common arguments to `last-train` and `lastal` with the
+   `--lastal_args` option, defaulting to `-E0.05 -C2`.
+
 ## 2.0.1
 
  - Correct a bug that caused index names to not be detected properly

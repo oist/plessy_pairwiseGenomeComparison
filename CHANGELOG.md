@@ -1,5 +1,10 @@
 # Change log
 
+## 2.0.1
+
+ - Correct a bug that caused index names to not be detected properly
+   when seeding schemes such as `MAM8` are used.
+
 ## 2.0.0
 
  - New `--seeding_scheme` that defaults to `NEAR`.  In previous versions the

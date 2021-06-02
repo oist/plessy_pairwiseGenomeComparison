@@ -1,10 +1,20 @@
 # Pairwise Genome Alignment
 
-## test remote
+## Options
+
+ * `--seeding_scheme` selects the name of the [LAST seed](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst)
+   The default (`NEAR`) searches for “_short-and-strong (near-identical)
+   similarities_ … _with many gaps (insertions and deletions)_”.  Among
+   alternatives, there is `YASS` for “_long-and-weak similarities_” that
+   “_allow for mismatches but not gaps_”.
+
+## Test
+
+### test remote
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
-## test locally
+### test locally
 
     nextflow run ./main.nf -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 

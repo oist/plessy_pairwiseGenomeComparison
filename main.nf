@@ -23,12 +23,20 @@ channel
     .map { row -> [ [id:'target'], row] }
     .set { target }
 
-// Turn the sample sheet in a channel of tuples suitable for LAST_LASTAL and downstream
-channel
-    .fromPath( params.input )
-    .splitCsv( header:true, sep:"\t" )
-    .map { row -> [ row, file(row.file, checkIfExists: true) ] }
-    .set { query }
+if (params.query) {
+    channel
+        .from( params.query )
+        .map { filename -> file(filename, checkIfExists: true) }
+        .map { row -> [ [id:'query'], row] }
+        .set { query }
+} else {
+    // Turn the sample sheet in a channel of tuples suitable for LAST_LASTAL and downstream
+    channel
+        .fromPath( params.input )
+        .splitCsv( header:true, sep:"\t" )
+        .map { row -> [ row, file(row.file, checkIfExists: true) ] }
+        .set { query }
+}
 
 // Align the genomes
     LAST_LASTDB    ( target )

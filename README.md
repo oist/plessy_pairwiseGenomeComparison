@@ -1,5 +1,16 @@
 # Pairwise Genome Alignment
 
+## Mandatory parameters
+
+ * `--target`: path to one genome file in FASTA format.  It will be indexed.
+
+ * `--input`: path to a sample sheet in tab-separated format with one header
+   line `id	file`, and one row per genome (ID and path to FASTA file).
+
+   — or —
+
+   `--query`: patch to one genome file in FASTA format.
+
 ## Options
 
  * `--seeding_scheme` selects the name of the [LAST seed](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst)
@@ -22,10 +33,12 @@
 ### test remote
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
+    nextflow run oist/plessy_pairwiseGenomeComparison -r main -profile oist --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
 ### test locally
 
     nextflow run ./main.nf -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
+    nextflow run ./main.nf -profile oist --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
 
 ## Advanced use

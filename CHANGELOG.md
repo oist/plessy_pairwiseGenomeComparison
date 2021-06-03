@@ -1,5 +1,10 @@
 # Change log
 
+## 3.1.0
+
+ - New `--query` option that saves the effort of creating a sample sheet
+   when there is only one query genome.
+
 ## 3.0.0
 
  - Force the score matrix to be symmetric (pass `--revsym` to `last-train`).

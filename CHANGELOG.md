@@ -1,5 +1,9 @@
 # Change log
 
+## 3.1.1
+
+ - Update LAST modules to the version accepted in nf-core.
+
 ## 3.1.0
 
  - New `--query` option that saves the effort of creating a sample sheet

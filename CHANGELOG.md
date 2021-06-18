@@ -1,5 +1,10 @@
 # Change log
 
+## 4.0.0
+
+ - *Important* bug fix ensuring that the right trained parameter set is used
+   with the right genome. (2c05b2de2da69864020fc4203f15d2fa14350d9c)
+
 ## 3.1.1
 
  - Update LAST modules to the version accepted in nf-core.

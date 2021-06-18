@@ -42,9 +42,9 @@ if (params.query) {
     LAST_LASTDB    ( target )
     LAST_TRAIN     ( query,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
-    LAST_LASTAL    ( query,
+    LAST_LASTAL    ( LAST_TRAIN.out.fastx,
                      LAST_LASTDB.out.index.map { row -> row[1] },
-                     LAST_TRAIN.out.param_file.map { row -> row[1] } )
+                     LAST_TRAIN.out.param_file )
     LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf,    'png' )
     LAST_POSTMASK  ( LAST_LASTAL.out.maf )
     LAST_DOTPLOT_2 ( LAST_POSTMASK.out.maf,  'png' )

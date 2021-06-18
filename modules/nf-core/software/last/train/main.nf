@@ -23,7 +23,8 @@ process LAST_TRAIN {
     path  index
 
     output:
-    tuple val(meta), path("*.par"), emit: param_file
+    path "*.par"                  , emit: param_file
+    tuple val(meta), path(fastx)  , emit: fastx
     path "*.version.txt"          , emit: version
 
     script:

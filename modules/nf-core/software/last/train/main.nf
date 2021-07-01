@@ -23,9 +23,8 @@ process LAST_TRAIN {
     path  index
 
     output:
-    path "*.par"                  , emit: param_file
-    tuple val(meta), path(fastx)  , emit: fastx
-    path "*.version.txt"          , emit: version
+    tuple val(meta), path ("*.par"), emit: param_file
+    path "*.version.txt"           , emit: version
 
     script:
     def software = getSoftwareName(task.process)

@@ -41,8 +41,11 @@ if (params.query) {
 
 // Align the genomes
     LAST_LASTDB    ( target )
-    TANTAN         ( query )
-    LAST_TRAIN     ( TANTAN.out.fasta,
+    if ( ! params.skip_tantan ) {
+        TANTAN         ( query )
+        query = TANTAN.out.fasta
+    }
+    LAST_TRAIN     ( query,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
     LAST_LASTAL    ( LAST_TRAIN.out.fastx,
                      LAST_LASTDB.out.index.map { row -> row[1] },

@@ -23,6 +23,9 @@
    the calls to `last-train` and `lastal`, like in the
    [LAST cookbook](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst).
 
+ * --skip_tantan will leave intact the original soft-masking of the query
+   sequences instead of re-masking with `tantan`.
+
 ## Fixed arguments
 
  * `--revsym` is hardcoded the call to `last-train` as the DNA strands

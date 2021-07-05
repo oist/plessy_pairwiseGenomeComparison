@@ -1,0 +1,51 @@
+name: tantan
+description: mask low complexity regions and short-period tandem repeats
+keywords:
+  - mask
+  - tandem repeat
+  - fasta
+tools:
+  - tantan:
+      description: tantan masks simple regions (low complexity & short-period tandem repeats) in biological sequences.
+      homepage: https://gitlab.com/mcfrith/tantan
+      documentation: https://gitlab.com/mcfrith/tantan/-/blob/main/README.rst
+      tool_dev_url: https://gitlab.com/mcfrith/tantan
+      doi: "10.1093/nar/gkq1212"
+      licence: ['GPL v3-or-later']
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Amino or nucleic acid sequence file in FASTA format
+      pattern: "*.{fasta}"
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - version:
+      type: file
+      description: File containing software version
+      pattern: "*.{version.txt}"
+  - fasta:
+      type: file
+      description: Masked amino or nucleic acid sequence file in FASTA format
+      pattern: "*.{fasta}"
+  - txt:
+      type: file
+      description: Analysis result in text format
+      pattern: "*.{txt}"
+  - bed:
+      type: file
+      description: Tandem repeat coordinates and information in BED format
+      pattern: "*.{bed}"
+
+authors:
+  - "@charles-plessy"

@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { TANTAN                         } from './modules/nf-core/software/tantan/main.nf'        addParams( options: [:] )
 include { LAST_LASTDB                    } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme}"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args':"--revsym ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"${params.lastal_args}", 'suffix':'.01.original_alignment'] )
@@ -40,7 +41,8 @@ if (params.query) {
 
 // Align the genomes
     LAST_LASTDB    ( target )
-    LAST_TRAIN     ( query,
+    TANTAN         ( query )
+    LAST_TRAIN     ( TANTAN.out.fasta,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
     LAST_LASTAL    ( LAST_TRAIN.out.fastx,
                      LAST_LASTDB.out.index.map { row -> row[1] },

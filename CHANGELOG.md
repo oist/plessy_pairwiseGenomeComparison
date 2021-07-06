@@ -1,5 +1,12 @@
 # Change log
 
+## 4.1.0
+
+ - Optionally pass a single alignment parameter file with a new
+   `--lastal_params` option.  Doing so skips `last-train`.
+ - Re-implement the correction of 4.0.0 in a way that complies with
+   nf-core, using a _join_ operation.
+
 ## 4.0.0
 
  - *Important* bug fix ensuring that the right trained parameter set is used

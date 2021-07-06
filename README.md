@@ -23,6 +23,12 @@
    the calls to `last-train` and `lastal`, like in the
    [LAST cookbook](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst).
 
+ * `--lastal_params`: path to a file containing alignment parameters
+   computed by [`last-train`](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst)
+   or a [scoring matrix](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst).
+   If this option is not used, the pipeline will run `last-train` for each
+   query.
+
 ## Fixed arguments
 
  * `--revsym` is hardcoded the call to `last-train` as the DNA strands

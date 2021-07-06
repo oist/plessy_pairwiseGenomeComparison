@@ -38,12 +38,20 @@ if (params.query) {
         .set { query }
 }
 
-// Align the genomes
+// Index the target genome
     LAST_LASTDB    ( target )
-    LAST_TRAIN     ( query,
+// Optionally train the alignment parameters
+    if (params.lastal_params) {
+        lastal_query = query.map { row -> [ row[0], row[1], file(params.lastal_params, checkIfExists: true) ] }
+    } else {
+        LAST_TRAIN ( query,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
-    LAST_LASTAL    ( query.join(LAST_TRAIN.out.param_file),
+        lastal_query = query.join(LAST_TRAIN.out.param_file)
+    }
+// Align the gennome
+    LAST_LASTAL    ( lastal_query,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
+// Post-process and plot
     LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf,    'png' )
     LAST_POSTMASK  ( LAST_LASTAL.out.maf )
     LAST_DOTPLOT_2 ( LAST_POSTMASK.out.maf,  'png' )

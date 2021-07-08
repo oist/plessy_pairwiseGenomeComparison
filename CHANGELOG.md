@@ -1,5 +1,9 @@
 # Change log
 
+## 4.1.1
+
+  - Correct version number in `nextflow.config` and brush up documentation.
+
 ## 4.1.0
 
  - Optionally pass a single alignment parameter file with a new

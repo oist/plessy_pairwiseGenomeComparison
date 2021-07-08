@@ -9,43 +9,56 @@
 
    — or —
 
-   `--query`: patch to one genome file in FASTA format.
+   `--query`: path to one genome file in FASTA format.
 
 ## Options
 
- * `--seeding_scheme` selects the name of the [LAST seed](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst)
+ * `--seeding_scheme` selects the name of the [LAST seed][]
    The default (`NEAR`) searches for “_short-and-strong (near-identical)
    similarities_ … _with many gaps (insertions and deletions)_”.  Among
    alternatives, there is `YASS` for “_long-and-weak similarities_” that
    “_allow for mismatches but not gaps_”.
 
  * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
-   the calls to `last-train` and `lastal`, like in the
-   [LAST cookbook](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst).
+   the calls to `last-train` and `lastal`, like in the [LAST cookbook][].
 
  * `--lastal_params`: path to a file containing alignment parameters
-   computed by [`last-train`](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst)
-   or a [scoring matrix](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst).
-   If this option is not used, the pipeline will run `last-train` for each
-   query.
+   computed by [`last-train`][] or a [scoring matrix][].  If this option
+   is not used, the pipeline will run `last-train` for each query.
+
+  [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
+  [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
+  [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
+  [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
 
 ## Fixed arguments
 
- * `--revsym` is hardcoded the call to `last-train` as the DNA strands
+ * The `last-train` commands always runs with `--revsym` as the DNA strands
    play equivalent roles in the studied genomes.
+
+## Usage
+
+    nextflow run oist/plessy_pairwiseGenomeComparison -r main \
+        --input samplesheet.tsv \
+        --target sequencefile.fa \
+        [-profile yourInstitution]
+
+This pipeline can use the institutional profiles defined in _nf-core_
+(<https://github.com/nf-core/configs#documentation>)
 
 ## Test
 
 ### test remote
 
-    nextflow run oist/plessy_pairwiseGenomeComparison -r main -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
-    nextflow run oist/plessy_pairwiseGenomeComparison -r main -profile oist --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
+    nextflow run oist/plessy_pairwiseGenomeComparison -r main \
+        --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta \
+        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
 ### test locally
 
-    nextflow run ./main.nf -profile oist --input testInput.tsv --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
-    nextflow run ./main.nf -profile oist --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
-
+    nextflow run ./main.nf \
+        --input testInput.tsv \
+        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
 ## Advanced use
 

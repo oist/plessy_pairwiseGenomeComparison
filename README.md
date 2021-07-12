@@ -1,5 +1,23 @@
 # Pairwise Genome Alignment
 
+## Outputs
+
+For each _query_ genome, this pipeline will align it to the _target_
+genome, post-process the alignments and produce dot plots visualisations
+at different steps of the workflow.  Each file contains a name suffix
+that indicates in which order they were created.
+
+ - `01.original_alignment`
+ - `02.plot`
+ - `03.postmasked`
+ - `04.plot`
+ - `05.split`
+ - `06.plot`
+ - `07.swap`
+ - `08.split`
+ - `09.swap`
+ - `10.plot`
+
 ## Mandatory parameters
 
  * `--target`: path to one genome file in FASTA format.  It will be indexed.
@@ -30,6 +48,11 @@
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
   [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
+
+ * Use `--skip_dotplot_1`, `--skip_dotplot_2`, `--skip_dotplot_3` to
+   skip the production of the dot plots that can be computationally expensive
+   and visually uninformative on large genomes with shared repeats.
+   File suffixes (see above) will not change.
 
 ## Fixed arguments
 

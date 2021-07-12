@@ -52,11 +52,17 @@ if (params.query) {
     LAST_LASTAL    ( lastal_query,
                      LAST_LASTDB.out.index.map { row -> row[1] } )
 // Post-process and plot
-    LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf,    'png' )
+    if (! params.skip_dotplot_1 ) {
+        LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf,    'png' )
+    }
     LAST_POSTMASK  ( LAST_LASTAL.out.maf )
-    LAST_DOTPLOT_2 ( LAST_POSTMASK.out.maf,  'png' )
+    if (! params.skip_dotplot_2 ) {
+        LAST_DOTPLOT_2 ( LAST_POSTMASK.out.maf,  'png' )
+    }
     LAST_SPLIT_1   ( LAST_POSTMASK.out.maf )
-    LAST_DOTPLOT_3 ( LAST_SPLIT_1.out.maf,   'png' )
+    if (! params.skip_dotplot_3 ) {
+        LAST_DOTPLOT_3 ( LAST_SPLIT_1.out.maf,   'png' )
+    }
     LAST_MAFSWAP_1 ( LAST_SPLIT_1.out.maf )
     LAST_SPLIT_2   ( LAST_MAFSWAP_1.out.maf )
     LAST_MAFSWAP_2 ( LAST_SPLIT_2.out.maf )

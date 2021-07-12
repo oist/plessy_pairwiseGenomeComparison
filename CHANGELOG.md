@@ -1,5 +1,10 @@
 # Change log
 
+## 4.2.0
+
+  - New options `--skip_dotplot_1`, `_2`, and `_3` to skip computationally
+    expensive and not always so useful plots.
+
 ## 4.1.1
 
   - Correct version number in `nextflow.config` and brush up documentation.

@@ -1,5 +1,10 @@
 # Change log
 
+## dev
+
+  - Move _postmask_ step at the end of the workflow, so that `last-split`
+    has more information.
+
 ## 4.2.0
 
   - New options `--skip_dotplot_1`, `_2`, and `_3` to skip computationally

@@ -4,6 +4,7 @@
 
   - Move _postmask_ step at the end of the workflow, so that `last-split`
     has more information.
+  - Update LAST to version 1250.
 
 ## 4.2.0
 

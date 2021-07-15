@@ -11,12 +11,10 @@ that indicates in which order they were created.
  - `02.plot`
  - `03.split`
  - `04.plot`
- - `05.swap`
- - `06.split`
- - `07.swap`
+ - `05.split`
+ - `06.plot`
+ - `07.postmasked`
  - `08.plot`
- - `09.postmasked`
- - `10.plot`
 
 ## Mandatory parameters
 

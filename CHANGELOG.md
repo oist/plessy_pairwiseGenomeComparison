@@ -4,6 +4,8 @@
 
   - Move _postmask_ step at the end of the workflow, so that `last-split`
     has more information.
+  - Use the new `--reverse` option of `last-split` so that the use of
+    `maf-swap` (and the files it generates) can be avoided.
   - Update LAST to version 1250.
 
 ## 4.2.0

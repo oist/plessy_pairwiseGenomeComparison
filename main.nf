@@ -8,12 +8,10 @@ include { LAST_LASTAL                    } from './modules/nf-core/software/last
 include { LAST_DOTPLOT as LAST_DOTPLOT_1 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.02.plot'] )
 include { LAST_SPLIT   as LAST_SPLIT_1   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['suffix':'.03.split'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_3 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.04.plot'] )
-include { LAST_MAFSWAP as LAST_MAFSWAP_1 } from './modules/nf-core/software/last/mafswap/main.nf'  addParams( options: ['suffix':'.05.swap'] )
-include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['suffix':'.06.split'] )
-include { LAST_MAFSWAP as LAST_MAFSWAP_2 } from './modules/nf-core/software/last/mafswap/main.nf'  addParams( options: ['suffix':'.07.swap'] )
-include { LAST_DOTPLOT as LAST_DOTPLOT_2 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.08.plot'] )
-include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.09.postmasked'] )
-include { LAST_DOTPLOT as LAST_DOTPLOT_4 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.10.plot'] )
+include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args': '--reverse', 'suffix':'.05.split'] )
+include { LAST_DOTPLOT as LAST_DOTPLOT_2 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.06.plot'] )
+include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.07.postmasked'] )
+include { LAST_DOTPLOT as LAST_DOTPLOT_4 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.08.plot'] )
 
 workflow {
 // Turn the file name in a tuple that is appropriate input for LAST_LASTDB
@@ -59,12 +57,10 @@ if (params.query) {
     if (! params.skip_dotplot_2 ) {
         LAST_DOTPLOT_2 ( LAST_SPLIT_1.out.maf,   'png' )
     }
-    LAST_MAFSWAP_1 ( LAST_SPLIT_1.out.maf )
-    LAST_SPLIT_2   ( LAST_MAFSWAP_1.out.maf )
-    LAST_MAFSWAP_2 ( LAST_SPLIT_2.out.maf )
+    LAST_SPLIT_2   ( LAST_SPLIT_1.out.maf )
     if (! params.skip_dotplot_3 ) {
-        LAST_DOTPLOT_3 ( LAST_MAFSWAP_2.out.maf,  'png' )
+        LAST_DOTPLOT_3 ( LAST_SPLIT_2.out.maf,  'png' )
     }
-    LAST_POSTMASK  ( LAST_MAFSWAP_2.out.maf, )
+    LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
     LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
 }

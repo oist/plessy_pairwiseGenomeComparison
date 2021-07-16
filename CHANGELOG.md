@@ -6,6 +6,8 @@
     has more information.
   - Use the new `--reverse` option of `last-split` so that the use of
     `maf-swap` (and the files it generates) can be avoided.
+  - Pass `fMAF+` to the fist call of `last-split` and `-m1e-5`
+    to the second call, as in the upstream cookbook.
   - Update LAST to version 1250.
 
 ## 4.2.0

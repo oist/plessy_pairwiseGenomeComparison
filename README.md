@@ -52,10 +52,16 @@ that indicates in which order they were created.
    and visually uninformative on large genomes with shared repeats.
    File suffixes (see above) will not change.
 
-## Fixed arguments
+## Fixed arguments (taken from the [LAST cookbook][])
 
  * The `last-train` commands always runs with `--revsym` as the DNA strands
    play equivalent roles in the studied genomes.
+
+ * The first call to `last-split` runs with `-fMAF+` to make it show per-base
+   mismap probabilities.
+
+ * The second call to `last-split` runs with `-m1e-5` to omit alignments with
+   mismap probability > 10<sup>−5</sup>.
 
 ## Usage
 

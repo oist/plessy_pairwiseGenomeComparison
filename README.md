@@ -30,10 +30,15 @@ that indicates in which order they were created.
 ## Options
 
  * `--seeding_scheme` selects the name of the [LAST seed][]
-   The default (`NEAR`) searches for “_short-and-strong (near-identical)
-   similarities_ … _with many gaps (insertions and deletions)_”.  Among
-   alternatives, there is `YASS` for “_long-and-weak similarities_” that
-   “_allow for mismatches but not gaps_”.
+   The default (`YASS`) searches for “_long-and-weak similarities_” that
+   “_allow for mismatches but not gaps_”.  Among alternatives, there
+   are (`NEAR`) for “_short-and-strong (near-identical) similarities_
+   … _with many gaps (insertions and deletions)_” or `RY32` that
+   “_reduces run time and memory use, by only seeking seeds at ~1/32
+   of positions in each sequence_”, which is useful when the purpose
+   of running this pipeline is only to generate whole-genome dotplots,
+   or when sensitivity for tiny fragments may be unnecessary or
+   undesirable.
 
  * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][].

@@ -9,6 +9,7 @@
   - Pass `fMAF+` to the fist call of `last-split` and `-m1e-5`
     to the second call, as in the upstream cookbook.
   - Update LAST to version 1250.
+  - Use `YASS` as default seed and advertise `RY32` in the README.
 
 ## 4.2.0
 

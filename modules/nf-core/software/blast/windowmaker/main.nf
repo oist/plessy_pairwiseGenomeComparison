@@ -29,8 +29,11 @@ process BLAST_WINDOWMASKER {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    windowmasker -mk_counts -in $fasta > genome.wmstat
-    windowmasker -ustat genome.wmstat -outfmt fasta -in $fasta | gzip > ${prefix}.fasta.gz # --no-name option unavailable on busybox :(
+    # Erase original masking
+    perl -pe ' next if />/ ; \$_ = uc' $fasta > uppercased.fasta
+    # Mask with windowmasker
+    windowmasker -mk_counts -in uppercased.fasta > genome.wmstat
+    windowmasker -ustat genome.wmstat -outfmt fasta -in uppercased.fasta | gzip > ${prefix}.fasta.gz # --no-name option unavailable on busybox :(
     windowmasker -version | head -n1 | sed 's/^.*windowmasker: //' > ${software}.version.txt
     """
 }

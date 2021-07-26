@@ -3,7 +3,8 @@
 nextflow.enable.dsl = 2
 
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmaker/main.nf' addParams( option: [:] )
-include { LAST_LASTDB                    } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme}"] )
+include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -R01"] )
+include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -R11"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args':"--revsym ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"${params.lastal_args}", 'suffix':'.01.original_alignment'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_1 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['suffix':'.02.plot'] )
@@ -43,18 +44,24 @@ if (params.query) {
         target = BLAST_WINDOWMASKER.out.fasta
     }
 // Index the target genome
-    LAST_LASTDB    ( target )
+    if (params.with_windowmasker) {
+        LAST_LASTDB_R11    ( target )
+        index = LAST_LASTDB_R11.out.index.map { row -> row[1] }
+    } else {
+        LAST_LASTDB_R01    ( target )
+        index = LAST_LASTDB_R01.out.index.map { row -> row[1] }
+    }
 // Optionally train the alignment parameters
     if (params.lastal_params) {
         lastal_query = query.map { row -> [ row[0], row[1], file(params.lastal_params, checkIfExists: true) ] }
     } else {
         LAST_TRAIN ( query,
-                     LAST_LASTDB.out.index.map { row -> row[1] } )
+                     index )
         lastal_query = query.join(LAST_TRAIN.out.param_file)
     }
 // Align the gennome
     LAST_LASTAL    ( lastal_query,
-                     LAST_LASTDB.out.index.map { row -> row[1] } )
+                     index )
 // Post-process and plot
     if (! params.skip_dotplot_1 ) {
         LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf,    'png' )

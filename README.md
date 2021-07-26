@@ -29,6 +29,12 @@ that indicates in which order they were created.
 
 ## Options
 
+ * `--with_windowmasker` optionally soft-masks the genome for interspersed
+   repeats with lowercase charactesr using the `windowmasker` tool of the
+   BLAST suite (https://pubmed.ncbi.nlm.nih.gov/16287941/).  The original
+   soft-masking is erased, to match the behaviour of the pipeline when
+   this option is not selected.
+
  * `--seeding_scheme` selects the name of the [LAST seed][]
    The default (`YASS`) searches for “_long-and-weak similarities_” that
    “_allow for mismatches but not gaps_”.  Among alternatives, there

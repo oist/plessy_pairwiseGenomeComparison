@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl = 2
 
+include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmaker/main.nf' addParams( option: [:] )
 include { LAST_LASTDB                    } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme}"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args':"--revsym ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"${params.lastal_args}", 'suffix':'.01.original_alignment'] )
@@ -36,6 +37,11 @@ if (params.query) {
         .set { query }
 }
 
+// Optionally mask the genome
+    if (params.with_windowmasker) {
+        BLAST_WINDOWMASKER ( target )
+        target = BLAST_WINDOWMASKER.out.fasta
+    }
 // Index the target genome
     LAST_LASTDB    ( target )
 // Optionally train the alignment parameters

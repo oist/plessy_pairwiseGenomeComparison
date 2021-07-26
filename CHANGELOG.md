@@ -1,6 +1,6 @@
 # Change log
 
-## dev
+## 5.0.0
 
   - Move _postmask_ step at the end of the workflow, so that `last-split`
     has more information.

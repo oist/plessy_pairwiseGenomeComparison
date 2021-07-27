@@ -1,5 +1,10 @@
 # Change log
 
+## 5.1.0
+
+ - New `--with_windowmasker` option to soft-mask the genome with the
+   `windowmasker` tool of the BLAST suite.
+
 ## 5.0.0
 
   - Move _postmask_ step at the end of the workflow, so that `last-split`

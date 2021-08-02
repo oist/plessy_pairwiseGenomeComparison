@@ -18,14 +18,14 @@ that indicates in which order they were created.
 
 ## Mandatory parameters
 
- * `--target`: path to one genome file in FASTA format.  It will be indexed.
+ * `--target`: path or URL to one genome file in FASTA format.  It will be indexed.
 
  * `--input`: path to a sample sheet in tab-separated format with one header
-   line `id	file`, and one row per genome (ID and path to FASTA file).
+   line `id	file`, and one row per genome (ID and path or URL to FASTA file).
 
    — or —
 
-   `--query`: path to one genome file in FASTA format.
+   `--query`: path or URL to one genome file in FASTA format.
 
 ## Options
 

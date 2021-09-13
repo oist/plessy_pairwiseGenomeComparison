@@ -98,14 +98,14 @@ This pipeline can use the institutional profiles defined in _nf-core_
 ### test remote
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main \
-        --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta \
-        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
+        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta \
+        --query https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
 
 ### test locally
 
     nextflow run ./main.nf \
         --input testInput.tsv \
-        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/fasta/contigs.fasta
+        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta
 
 ## Advanced use
 

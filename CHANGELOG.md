@@ -7,6 +7,10 @@
    the alignment to the _target_ genome).  _query_ genome sequence
    names are now written horizontally.
 
+ - In the README's examples, reversed the role of the target and
+   query sequences for better demonstrating the new dotplot
+   defaults.
+
 ## 5.1.0
 
  - New `--with_windowmasker` option to soft-mask the genome with the

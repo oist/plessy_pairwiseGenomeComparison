@@ -1,5 +1,12 @@
 # Change log
 
+## development
+
+ - New `--dotplot_options` option to modify the dot plots.  New
+   default sort and orientation of the _query_ genome (to match
+   the alignment to the _target_ genome).  _query_ genome sequence
+   names are now written horizontally.
+
 ## 5.1.0
 
  - New `--with_windowmasker` option to soft-mask the genome with the

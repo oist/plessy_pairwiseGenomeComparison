@@ -53,15 +53,24 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
-  [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
-  [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
-  [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
-  [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
+ * The dotplots can be modified by overriding defaults and passing new
+   arguments via the `--dotplot_options` argument.  Defaults and available
+   options can be seen on the manual page of the [`last-dotplot`][] program.
+   By default in this pipeline, the sequences of the _query_ genome are
+   sorted and oriented by their alignment to the _target_ genome
+   (`--sort2=3 --strands2=1`). For readability, their names are written
+   horizontally (`--rot2=h`).
 
  * Use `--skip_dotplot_1`, `--skip_dotplot_2`, `--skip_dotplot_3` to
    skip the production of the dot plots that can be computationally expensive
    and visually uninformative on large genomes with shared repeats.
    File suffixes (see above) will not change.
+
+  [`last-dotplot`]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
+  [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
+  [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
+  [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
+  [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
 
 ## Fixed arguments (taken from the [LAST cookbook][])
 

@@ -1,6 +1,6 @@
 # Change log
 
-## development
+## 5.2.0
 
  - New `--dotplot_options` option to modify the dot plots.  New
    default sort and orientation of the _query_ genome (to match

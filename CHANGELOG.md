@@ -1,5 +1,11 @@
 # Change log
 
+## 6.0.0
+
+ - Change default `-m` value of `last-split` to the default (`-m1` at the
+   moment) and add a new option `--last_split_args` to allow setting other
+   values (such as `-m1e-5` that was used previously).
+
 ## 5.2.0
 
  - New `--dotplot_options` option to modify the dot plots.  New

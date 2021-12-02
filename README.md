@@ -53,6 +53,10 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
+ * `--last_split_args`: default to empty value.  It can be used to pass
+   options to `last-split`, for instance to set `-m1e-5` like in earlier
+   versions of this pipeline.
+
  * The dotplots can be modified by overriding defaults and passing new
    arguments via the `--dotplot_options` argument.  Defaults and available
    options can be seen on the manual page of the [`last-dotplot`][] program.

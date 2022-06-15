@@ -1,5 +1,11 @@
 # Change log
 
+## 5.2.1
+
+ - Guess index file name by searching for a `prj` file instead of
+   a `des` file, because `des` file is not guaranteed to be unique
+   when genome is large and index is split in multiple files.
+
 ## 5.2.0
 
  - New `--dotplot_options` option to modify the dot plots.  New

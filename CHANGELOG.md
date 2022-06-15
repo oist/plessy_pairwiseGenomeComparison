@@ -1,10 +1,12 @@
 # Change log
 
-## 5.2.1
+## 5.2.2
 
- - Guess index file name by searching for a `prj` file instead of
-   a `des` file, because `des` file is not guaranteed to be unique
-   when genome is large and index is split in multiple files.
+ - Guess index file name by searching for `prj` files and selecting
+   the shortest base name.  The previous method failed when the
+   indexed genome was large enough to cause the generation of multiple
+   `prj` (or `des`) files.  Version `5.2.1` attempted to solve the
+   problem but failed.
 
 ## 5.2.0
 

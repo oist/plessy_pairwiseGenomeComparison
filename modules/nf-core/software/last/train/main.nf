@@ -30,7 +30,7 @@ process LAST_TRAIN {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.prj) .prj)
+    INDEX_NAME=\$(basename -s .prj \$(ls $index/*.prj) | sort | head -n1)
 
     last-train \\
         $options.args \\

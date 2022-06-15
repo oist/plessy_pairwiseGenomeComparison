@@ -31,7 +31,7 @@ process LAST_LASTAL {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.prj) .prj)
+    INDEX_NAME=\$(basename -s .prj \$(ls $index/*.prj) | sort | head -n1)
     lastal \\
         $trained_params \\
         $options.args \\

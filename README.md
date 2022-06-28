@@ -8,12 +8,12 @@ at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
  - `01.original_alignment`
- - `02.many2many`
+ - `02.many_to_many_alignment`
  - `03.split`
- - `04.many2one`
+ - `04.many_to_one_alignment`
  - `05.split`
- - `06.one2one`
- - `07.repetitive elements filter`
+ - `06.one_to_one_alignment`
+ - `07.repetitive_elements_filter`
  - `08.plot`
 
 ## Mandatory parameters

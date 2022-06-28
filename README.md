@@ -13,8 +13,8 @@ that indicates in which order they were created.
  - `04.many_to_one_alignment`
  - `05.split`
  - `06.one_to_one_alignment`
- - `07.repetitive_elements_filter`
- - `08.plot`
+ - `07.postmasked`
+ - `08.postmasked`
 
 ## Mandatory parameters
 

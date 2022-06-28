@@ -14,7 +14,7 @@ that indicates in which order they were created.
  - `05.split`
  - `06.one_to_one_alignment`
  - `07.postmasked`
- - `08.postmasked`
+ - `08.postmasked_plot`
 
 ## Mandatory parameters
 

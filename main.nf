@@ -14,6 +14,7 @@ include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last
 include { LAST_DOTPLOT as LAST_DOTPLOT_3 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.one2one_plot'] )
 include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.repetitive_elements_filter'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_4 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.repetitive_elements_filter_plot'] )
+include { LAST_MAFCONVERT as LAST_MAFCONVERT_4_GFF } from './modules/nf-core/software/last/mafconvert/main.nf'  addParams( options: ['args':"", 'suffix':'.repetitive_elements_filter'] )
 
 workflow {
 // Turn the file name in a tuple that is appropriate input for LAST_LASTDB
@@ -76,4 +77,5 @@ if (params.query) {
     }
     LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
     LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
+    LAST_MAFCONVERT_4_GFF ( LAST_POSTMASK.out.maf, 'gff' )
 }

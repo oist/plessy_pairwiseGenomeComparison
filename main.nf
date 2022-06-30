@@ -76,7 +76,7 @@ if (params.query) {
     if (! params.skip_dotplot_3 ) {
         LAST_DOTPLOT_3 ( LAST_SPLIT_2.out.maf,  'png' )
     }
-    LAST_MAFCONVERT_4_ONE2ONE_GFF (LAST_SPLIT.out.maf, 'axt')
+    LAST_MAFCONVERT_4_ONE2ONE_AXT (LAST_SPLIT.out.maf, 'axt')
     LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
     LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
     LAST_MAFCONVERT_4_GFF ( LAST_POSTMASK.out.maf, 'gff' )

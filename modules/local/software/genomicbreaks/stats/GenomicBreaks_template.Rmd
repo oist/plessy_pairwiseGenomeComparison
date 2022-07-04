@@ -1,0 +1,264 @@
+---
+title: "Count features"
+author: "Charles Plessy"
+date: "01/06/2021"
+output: 
+  html_document: 
+    keep_md: yes
+params:
+  axtFile: "~/projects/GenomicBreaks_results/80e979e491f82aaa97bdcac4a27683/Dalb__Dalb_15112-1751.03v1.axt.gz"
+  gffFile: "~/projects/GenomicBreaks_results/80e979e491f82aaa97bdcac4a27683/Dalb__Dalb_15112-1751.03v1.gff.gz"
+  prefix: "OSKA2016v1.9__O_van"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(progress = TRUE, verbose = TRUE, root.dir = system2("pwd", stdout = TRUE))
+```
+
+```{r load_libraries}
+requireNamespace("CNEr", quietly = TRUE)
+library("ggplot2")
+library("GenomicBreaks")
+suppressPackageStartupMessages(library("GenomicRanges"))
+```
+
+How to use this Rmarkdown template:
+
+It is essential to set `R_LIBS_USER` to an empty value, otherwise `R` will
+attempt to load packages from the user's library, which were compiled in a
+different environment than the GenomicBreaks Singularity image.
+
+Example command
+
+```
+R_LIBS_USER='' R -e 'rmarkdown::render("thisTemplate.Rmd", output_file = "./outFile.html", params = list(axtFile = "/path/do/dir/with/alignment/files"))'
+```
+
+Load data
+---------
+
+We load alignment data in [axt](https://genome-asia.ucsc.edu/goldenPath/help/axt.html)
+format using the Bioconductor package [CNEr](https://bioconductor.org/packages/release/bioc/html/CNEr.html),
+as it allows to easily calculate the percentage similarity between the aligned
+regions.
+
+```{r load_data}
+# Display parameters
+
+params
+
+# Load the alignment in an Axt object
+axt <- CNEr::readAxt(params$axtFile)
+
+# See https://github.com/ge11232002/CNEr/blob/61ec06cc6dc01c9df77fe6e41e467e8fb91633db/R/Axt-methods.R#L59-L60
+compResults <- Biostrings::compareStrings(CNEr::targetSeqs(axt), CNEr::querySeqs(axt))
+compResults <- table(unlist(strsplit(compResults, "")))
+```
+
+Quote from `compareStrings()` manual page:
+
+> combines two equal-length strings that are assumed to be aligned into a single
+> character string containing that replaces mismatches with `?`, insertions with
+> `+`, and deletions with `-`.
+
+Coalesce contigs and study unaligned regions
+--------------------------------------------
+
+We can not use the _Axt_ objects for synteny analysis with the _GenomicBreaks_
+package as they would need to be processed with the _CNEr_'s `fixCoordinates`
+function before conversion to a _GBreaks_ format, which requires information on
+chromosome length that we do not provide to this workflow.
+
+The _GBreaks_ objects are lighter as they do not contain sequence information,
+and are the native format in our _GenomicBreaks_ package.  They wrap the
+_GRanges_ class and therefore are easy to interact with.
+
+```{r load_genomic_breaks}
+# Load alignment information from GFF3 files to GBreaks objects.
+# The `gb_match` object contains ranges that are already collapsed by `maf-convert`.
+gb_match <- load_genomic_breaks(params$gffFile, type = "match") #,      target_bsgenome = get(params$BSgenome1))
+
+# The `gb_parts` object contains ranges that correspond to aligned regions only.  (Therefore they have a score)
+gb_parts <- load_genomic_breaks(params$gffFile, type = "match_part") #, target_bsgenome = get(params$BSgenome1))
+```
+
+```{r flag_genomic_breaks}
+# gb_parts <- gb_parts |>
+#   flagColinearAlignments() |>
+#   flagInsersions() |>
+#   flagInversions()
+# sapply(mcols(gb_parts)[,c("colinear", "ins", "inv")], sum)
+```
+
+```{r coalesce_contigs}
+gb_col <- coalesce_contigs(gb_parts)
+gb_col$minw <- pmin(width(gb_col), width(gb_col$query))
+gb_col <- gb_col |>  flagInversions()
+gb_col$col_1e3 <- NA
+# mcols(gb_col)[gb_col$minw >= 1e3, "col_1e3"] <- flagColinearAlignments(gb_col, minwidth = 1e3)$colinear
+# mcols(gb_col)[gb_col$minw >= 1e4, "col_1e4"] <- flagColinearAlignments(gb_col, minwidth = 1e4)$colinear
+# mcols(gb_col)[gb_col$minw >= 1e5, "col_1e5"] <- flagColinearAlignments(gb_col, minwidth = 1e5)$colinear
+```
+
+We flag the alignments again after discarding the shortest regions.  This
+allows the short colinear regions to consolidate first.  Thus, we only remove
+the short alignments that interrupt the colinearity of longer ones.
+
+
+### Extract information
+
+Let's call the intervals between two alignment parts “_Unaligned_” sequences.
+We need a function that returns only them.  Bioconductor's `gaps()` function
+will return also the unaligned sequences between the start/end of chromosome
+and the first/last block.  The `cleanGaps` function below removes them before
+returning the object.
+   
+```{r clean_gaps}
+cleanGaps <- function(gb) {
+  # Drop all seq info, otherwise gaps() adds artificial results on unused strands
+  gb <- GRanges(seqnames = seqnames(gb), ranges = ranges(gb), strand = "*")
+  gps <- gaps(gb)
+  gpsList <- split(gps, seqnames(gps), drop = TRUE)
+  cleanList <- endoapply(gpsList, \(x) x[-1])
+  unlist(cleanList)
+}
+gb_parts_unal <- cleanGaps(gb_parts)
+gb_col_unal   <- cleanGaps(gb_col)
+```
+
+```{r plot_widths, dev = c('svg', 'png')}
+# To handle cases where everything is collapsed
+gb_col_unal__ <-
+  if(length(gb_col_unal) == 0) {
+    IRanges(start = 1, width = 0)
+  } else {
+    gb_col_unal
+  }
+
+# Need to wrap in a function to handle empty GRanges objects...
+width2df <- function(what, gr) {
+  if (length(gr) == 0) return (NULL)
+  data.frame(what = what, width = width(gr))
+}
+
+df <- rbind(
+  width2df(what = "aligned",     gr = gb_parts),
+  width2df(what = "unaligned",   gr = gb_parts_unal),
+  width2df(what = "collapsed",   gr = gb_col),
+  width2df(what = "uncollapsed", gr = gb_col_unal__),
+  width2df(what = "match",       gr = gb_match)
+)
+
+ggplot(df) +
+  aes(width) +
+  geom_histogram() +
+  scale_x_log10() +
+  facet_wrap(~what, nrow = 2)
+```
+
+Inversions
+----------
+
+```{r study_inversions}
+gb_col <- flagInversions(gb_col)
+sum(gb_col$inv)
+invPos <- NULL
+if (sum(gb_col$inv) > 10) {
+  invPos <- which(gb_col$inv) + 1
+  invContext <- c(invPos -1 , invPos, invPos + 1) |> unique() |> sort()
+  gb_col[gb_col$inv]
+  gb_col[invContext] |> head(11)
+  
+  # Histogram of the widths
+  ggplot(data.frame(width = width(gb_col[gb_col$inv]))) +
+    aes(width) +
+    geom_histogram() +
+    scale_x_log10()
+  
+  # Why are the inversions overwhelmingly on the plus strand ?
+  ggplot(data.frame(strand = strand(gb_col[gb_col$inv]))) +
+    aes(strand) +
+    geom_bar()
+  
+  # Flip strands
+  gb_inv_flipped <- gb_col
+  # Note that the `inv` flag marks the beginning of an inversion pattern of length 3
+  # Therefore the strands need to be flipped at inv + 1
+  strand(gb_inv_flipped)[invPos] <- ifelse (strand(gb_inv_flipped)[invPos] == "+", "-", "+")
+  gb_inv_flipped[gb_inv_flipped$inv]
+  gb_inv_flipped[invContext] |> head(11)
+  
+  # One more round is needed to resolve the inversions that were next to each other.
+  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
+  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
+  
+  # One more round is needed to resolve the inversions that were next to each other.
+  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
+  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
+  
+  # One more round is needed to resolve the inversions that were next to each other.
+  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
+  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
+  
+  # One more round is needed to resolve the inversions that were next to each other.
+  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
+  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
+  
+  # Do we need another round ?
+  which(flagInversions(gb_inv_flipped)$inv) + 1
+  
+  gb_inv_col <- coalesce_contigs(gb_inv_flipped)
+  
+  flagInversions(gb_inv_col)$inv
+  
+  as.list(summary(width(gb_inv_col)))
+}
+```
+Calculate numbers and prepare them for export in a YAML file
+------------------------------------------------------------
+
+The alignment length is relative to the target (indexed) genome.
+
+```{r count_features}
+report <- list()
+report[["alignment_summary"]] <- as.list(compResults)
+report[["CNEr_total"]] <- sum(compResults[c("A", "C", "G", "T", "+", "?")], na.rm = TRUE)
+report[["aligned_total"]] <- sum(width(gb_parts))
+report[["collapsed_total"]] <- sum(width(gb_col))
+report[["unal_total"]]  <- sum(width(gb_parts_unal))
+report[["uncol_total"]] <- sum(width(gb_col_unal))
+report[["percent_similarity"]] <- 1 - compResults["?"] / report[["aligned_total"]]
+
+report[["number_of_ranges_axt"]] <- length(CNEr::first(axt))
+report[["number_of_ranges_part"]] <- length(gb_parts)
+report[["number_of_ranges_col"]] <- length(gb_col)
+report[["number_of_ranges_match"]] <- length(gb_match)
+report[["number_of ranges_inverted"]] <- sum(gb_col$inv)
+
+report[["N50_part"]]  <- weighted.mean(width(gb_parts), as.numeric(width(gb_parts))) # as.num to avoid integer overflow
+report[["L50_part"]]  <- sum(width(gb_parts) > report[["N50_part"]])
+report[["N50_col"]]   <- weighted.mean(width(gb_col), as.numeric(width(gb_col)))
+report[["L50_col"]]   <- sum(width(gb_col) > report[["N50_col"]])
+report[["N50_match"]] <- weighted.mean(width(gb_match), as.numeric(width(gb_match)))
+report[["L50_match"]] <- sum(width(gb_match) > report[["N50_match"]])
+report[["synteny_index"]] <- synteny_index(gb_parts)
+report[["correlation_index"]] <- correlation_index(gb_parts)
+
+report[["width_summary_aligned"]] <- as.list(summary(width(gb_parts)))
+report[["width_summary_collapsed"]] <- as.list(summary(width(gb_col)))
+report[["width_summary_match"]] <- as.list(summary(width(gb_match)))
+report[["width_summary_unaligned"]] <- as.list(summary(width(gb_parts_unal)))
+report[["width_summary_uncollapsed"]] <- as.list(summary(width(gb_col_unal)))
+report[["width_summary_inversions"]] <- as.list(summary(width(gb_col[invPos])))
+```
+
+Export the results to a YAML file.
+
+```{r export_results}
+yaml <- yaml::as.yaml(report)
+yaml::write_yaml(yaml, paste0(params$prefix, ".yaml"))
+cat(yaml)
+```

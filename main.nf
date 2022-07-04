@@ -93,5 +93,7 @@ channel
     LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
     LAST_MAFCONVERT_4_AXT ( LAST_POSTMASK.out.maf, 'axt' )
     LAST_MAFCONVERT_4_GFF ( LAST_POSTMASK.out.maf, 'gff' )
-    GENOMICBREAKS_STATS ( LAST_MAFCONVERT_4_AXT.out.axt.join(LAST_MAFCONVERT_4_GFF.out.gff), GBtempl )
+    if (params.run_GBreaks_analysis) {
+      GENOMICBREAKS_STATS ( LAST_MAFCONVERT_4_AXT.out.axt.join(LAST_MAFCONVERT_4_GFF.out.gff), GBtempl )
+    }
 }

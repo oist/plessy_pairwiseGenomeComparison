@@ -96,7 +96,6 @@ gb_parts <- load_genomic_breaks(params$gffFile, type = "match_part") #, target_b
 ```{r coalesce_contigs}
 gb_col <- coalesce_contigs(gb_parts)
 gb_col$minw <- pmin(width(gb_col), width(gb_col$query))
-gb_col <- gb_col |>  flagInversions()
 gb_col$col_1e3 <- NA
 # mcols(gb_col)[gb_col$minw >= 1e3, "col_1e3"] <- flagColinearAlignments(gb_col, minwidth = 1e3)$colinear
 # mcols(gb_col)[gb_col$minw >= 1e4, "col_1e4"] <- flagColinearAlignments(gb_col, minwidth = 1e4)$colinear
@@ -159,64 +158,6 @@ ggplot(df) +
   facet_wrap(~what, nrow = 2)
 ```
 
-Inversions
-----------
-
-```{r study_inversions}
-gb_col <- flagInversions(gb_col)
-sum(gb_col$inv)
-invPos <- NULL
-if (sum(gb_col$inv) > 10) {
-  invPos <- which(gb_col$inv) + 1
-  invContext <- c(invPos -1 , invPos, invPos + 1) |> unique() |> sort()
-  gb_col[gb_col$inv]
-  gb_col[invContext] |> head(11)
-  
-  # Histogram of the widths
-  ggplot(data.frame(width = width(gb_col[gb_col$inv]))) +
-    aes(width) +
-    geom_histogram() +
-    scale_x_log10()
-  
-  # Why are the inversions overwhelmingly on the plus strand ?
-  ggplot(data.frame(strand = strand(gb_col[gb_col$inv]))) +
-    aes(strand) +
-    geom_bar()
-  
-  # Flip strands
-  gb_inv_flipped <- gb_col
-  # Note that the `inv` flag marks the beginning of an inversion pattern of length 3
-  # Therefore the strands need to be flipped at inv + 1
-  strand(gb_inv_flipped)[invPos] <- ifelse (strand(gb_inv_flipped)[invPos] == "+", "-", "+")
-  gb_inv_flipped[gb_inv_flipped$inv]
-  gb_inv_flipped[invContext] |> head(11)
-  
-  # One more round is needed to resolve the inversions that were next to each other.
-  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
-  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
-  
-  # One more round is needed to resolve the inversions that were next to each other.
-  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
-  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
-  
-  # One more round is needed to resolve the inversions that were next to each other.
-  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
-  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
-  
-  # One more round is needed to resolve the inversions that were next to each other.
-  remainingInvs <- which(flagInversions(gb_inv_flipped)$inv) + 1
-  strand(gb_inv_flipped)[remainingInvs] <- ifelse (strand(gb_inv_flipped)[remainingInvs] == "+", "-", "+")
-  
-  # Do we need another round ?
-  which(flagInversions(gb_inv_flipped)$inv) + 1
-  
-  gb_inv_col <- coalesce_contigs(gb_inv_flipped)
-  
-  flagInversions(gb_inv_col)$inv
-  
-  as.list(summary(width(gb_inv_col)))
-}
-```
 Calculate numbers and prepare them for export in a YAML file
 ------------------------------------------------------------
 
@@ -236,7 +177,6 @@ report[["number_of_ranges_axt"]] <- length(CNEr::first(axt))
 report[["number_of_ranges_part"]] <- length(gb_parts)
 report[["number_of_ranges_col"]] <- length(gb_col)
 report[["number_of_ranges_match"]] <- length(gb_match)
-report[["number_of ranges_inverted"]] <- sum(gb_col$inv)
 
 report[["N50_part"]]  <- weighted.mean(width(gb_parts), as.numeric(width(gb_parts))) # as.num to avoid integer overflow
 report[["L50_part"]]  <- sum(width(gb_parts) > report[["N50_part"]])
@@ -252,7 +192,6 @@ report[["width_summary_collapsed"]] <- as.list(summary(width(gb_col)))
 report[["width_summary_match"]] <- as.list(summary(width(gb_match)))
 report[["width_summary_unaligned"]] <- as.list(summary(width(gb_parts_unal)))
 report[["width_summary_uncollapsed"]] <- as.list(summary(width(gb_col_unal)))
-report[["width_summary_inversions"]] <- as.list(summary(width(gb_col[invPos])))
 ```
 
 Export the results to a YAML file.

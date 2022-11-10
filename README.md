@@ -1,20 +1,15 @@
-# Pairwise Genome Alignment
+# Read to Genome Alignment
 
 ## Outputs
 
-For each _query_ genome, this pipeline will align it to the _target_
-genome, post-process the alignments and produce dot plots visualisations
-at different steps of the workflow.  Each file contains a name suffix
-that indicates in which order they were created.
+For each _query_ set of reads, this pipeline will align them to the _target_
+genome, and post-process the alignments to keep the best matches and remove
+low-confidence hits. Each file contains a name suffix that indicates in which
+order they were created.
 
  - `01.original_alignment`
- - `02.plot`
- - `03.split`
- - `04.plot`
- - `05.split`
- - `06.plot`
- - `07.postmasked`
- - `08.plot`
+ - `02.split`
+ - `03.postmasked`
 
 ## Mandatory parameters
 
@@ -29,22 +24,14 @@ that indicates in which order they were created.
 
 ## Options
 
- * `--with_windowmasker` optionally soft-masks the genome for interspersed
-   repeats with lowercase charactesr using the `windowmasker` tool of the
-   BLAST suite (https://pubmed.ncbi.nlm.nih.gov/16287941/).  The original
-   soft-masking is erased, to match the behaviour of the pipeline when
-   this option is not selected.
-
- * `--seeding_scheme` selects the name of the [LAST seed][]
-   The default (`YASS`) searches for “_long-and-weak similarities_” that
-   “_allow for mismatches but not gaps_”.  Among alternatives, there
-   are (`NEAR`) for “_short-and-strong (near-identical) similarities_
-   … _with many gaps (insertions and deletions)_” or `RY32` that
-   “_reduces run time and memory use, by only seeking seeds at ~1/32
-   of positions in each sequence_”, which is useful when the purpose
-   of running this pipeline is only to generate whole-genome dotplots,
-   or when sensitivity for tiny fragments may be unnecessary or
-   undesirable.
+ * `--seeding_scheme` selects the name of the [LAST seed][] The default
+   (`NEAR`) for “_short-and-strong (near-identical) similarities_ … _with many
+   gaps (insertions and deletions)_” Among alternatives, there are (`YASS`)
+   searches for “_long-and-weak similarities_” that “_allow for mismatches but not
+   gaps_”.  or `RY32` that “_reduces run time and memory use, by only seeking
+   seeds at ~1/32 of positions in each sequence_”, which is useful when the
+   purpose of running this pipeline is only to generate whole-genome dotplots, or
+   when sensitivity for tiny fragments may be unnecessary or undesirable.
 
  * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][].
@@ -53,20 +40,6 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
- * The dotplots can be modified by overriding defaults and passing new
-   arguments via the `--dotplot_options` argument.  Defaults and available
-   options can be seen on the manual page of the [`last-dotplot`][] program.
-   By default in this pipeline, the sequences of the _query_ genome are
-   sorted and oriented by their alignment to the _target_ genome
-   (`--sort2=3 --strands2=1`). For readability, their names are written
-   horizontally (`--rot2=h`).
-
- * Use `--skip_dotplot_1`, `--skip_dotplot_2`, `--skip_dotplot_3` to
-   skip the production of the dot plots that can be computationally expensive
-   and visually uninformative on large genomes with shared repeats.
-   File suffixes (see above) will not change.
-
-  [`last-dotplot`]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
   [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
@@ -77,11 +50,8 @@ that indicates in which order they were created.
  * The `last-train` commands always runs with `--revsym` as the DNA strands
    play equivalent roles in the studied genomes.
 
- * The first call to `last-split` runs with `-fMAF+` to make it show per-base
+ * The call to `last-split` runs with `-fMAF+` to make it show per-base
    mismap probabilities.
-
- * The second call to `last-split` runs with `-m1e-5` to omit alignments with
-   mismap probability > 10<sup>−5</sup>.
 
 ## Usage
 

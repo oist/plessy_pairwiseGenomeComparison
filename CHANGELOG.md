@@ -1,5 +1,12 @@
 # Change log
 
+## 0.0.0
+
+ - Remove functionalities from pairwiseAlignmentPipeline and call it
+   readAlignPipeline.
+
+## Fork to make the readAlignPipeline
+
 ## 5.2.2
 
  - Guess index file name by searching for `prj` files and selecting

@@ -36,13 +36,14 @@ process filter_mapped_reads {
         to_one_line      = "toOneLine() { paste <(sed -n 1~4p \$1) <(sed -n 2~4p \$1) <(sed -n 3~4p \$1) <(sed -n 4~4p \$1) ; }"
         to_four_lines    = "toFourLines() { sed 's/\\t/\\n/g' ; }"
         // Remove reads matching haplotypes scaffolds from original reads.
-        filter_reads = "toOneLine ${reads} | grep -v -f reads_rem.txt | toFourLines > ${prefix}.reads_kept.fq"
+        filter_reads = "toOneLine unzipped_reads | grep -v -f reads_to_remove | toFourLines > ${prefix}.reads_kept.fq"
 
         //SHELL
         """
         ${make_read_list}
         ${to_one_line}
         ${to_four_lines}
+        zcat ${reads} > unzipped_reads
         ${filter_reads}
 
         echo "0.0.0" > ${software}.version.txt

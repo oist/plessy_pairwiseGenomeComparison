@@ -7,6 +7,7 @@ include { LAST_TRAIN                     } from './modules/nf-core/software/last
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"${params.lastal_args}", 'suffix':'.01.original_alignment'] )
 include { LAST_SPLIT   as LAST_SPLIT_1   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':'-fMAF+', 'suffix':'.02.split'] )
 include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.03.postmasked'] )
+include { filter_mapped_reads as FILTER_READS } from './modules/local/software/filter_mapped_reads/main.nf' addParams( options: [ : ] )
 
 workflow {
 // Turn the file name in a tuple that is appropriate input for LAST_LASTDB
@@ -40,4 +41,7 @@ if (params.query) {
                       index )
     LAST_SPLIT_1    ( LAST_LASTAL.out.maf )
     LAST_POSTMASK   ( LAST_SPLIT_1.out.maf )
+if (params.filter_reads) {
+    FILTER_READS(query.join(LAST_POSTMASK.out.maf))
+}
 }

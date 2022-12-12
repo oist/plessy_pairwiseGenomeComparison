@@ -13,9 +13,9 @@ process LAST_SPLIT {
 
     conda (params.enable_conda ? "bioconda::last=1250" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/last:1250--h2e03b76_0"
+        container "https://depot.galaxyproject.org/singularity/last:1418--h5b5514e_0"
     } else {
-        container "quay.io/biocontainers/last:1250--h2e03b76_0"
+        container "quay.io/biocontainers/last:1418--h5b5514e_0"
     }
 
     input:

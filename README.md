@@ -50,9 +50,6 @@ order they were created.
  * The `last-train` commands always runs with `--revsym` as the DNA strands
    play equivalent roles in the studied genomes.
 
- * The call to `last-split` runs with `-fMAF+` to make it show per-base
-   mismap probabilities.
-
 ## Usage
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main \

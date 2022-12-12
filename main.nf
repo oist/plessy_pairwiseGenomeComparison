@@ -4,8 +4,8 @@ nextflow.enable.dsl = 2
 
 include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -R01"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args':"--revsym ${params.lastal_args}"] )
-include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"--split ${params.lastal_args}", 'suffix':'.01.original_alignment'] )
-include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.03.postmasked'] )
+include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':"--split ${params.lastal_args}"] )
+include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.postmasked'] )
 include { filter_mapped_reads as FILTER_READS } from './modules/local/software/filter_mapped_reads/main.nf' addParams( options: [ : ] )
 
 workflow {

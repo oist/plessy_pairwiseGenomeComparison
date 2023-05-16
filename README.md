@@ -1,5 +1,11 @@
 # Pairwise Genome Alignment
 
+## If you use this pipeline, please cite:
+
+_Extreme genome scrambling in cryptic Oikopleura dioica species_. Charles Plessy, Michael J. Mansfield, Aleksandra Bliznina, Aki Masunaga, Charlotte West, Yongkai Tan, Andrew W. Liu, Jan Grašič, María Sara del Río Pisula, Gaspar Sánchez-Serna, Marc Fabrega-Torrus, Alfonso Ferrández-Roldán, Vittoria Roncalli, Pavla Navratilova, Eric M. Thompson, Takeshi Onuma, Hiroki Nishida, Cristian Cañestro, Nicholas M. Luscombe. bioRxiv 2023.05.09.539028; doi: https://doi.org/10.1101/2023.05.09.539028
+
+And also please cite the [LAST papers](https://gitlab.com/mcfrith/last/-/blob/main/doc/last-papers.rst).
+
 ## Outputs
 
 For each _query_ genome, this pipeline will align it to the _target_

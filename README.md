@@ -13,13 +13,13 @@ genome, post-process the alignments and produce dot plots visualisations
 at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
- - `01.original_alignment`
+ - `01.original_alignment` is the many-to-many alignment between _target_ and _query_ genomes.
  - `02.plot`
- - `03.split`
+ - `03.split` is the many-to-one alignment regions of the _target_ genome are matched at most once by the _query_ genome.
  - `04.plot`
- - `05.split`
+ - `05.split` is the `one-to-one` alignment between the _target_ and _query_ genomes.
  - `06.plot`
- - `07.postmasked`
+ - `07.postmasked` is a filtered `one-to-one` alignment where low-confidence matches made mostly of masked regions are removed.
  - `08.plot`
 
 ## Mandatory parameters
@@ -59,9 +59,14 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
+ * `--skip_m2m`: Skip the many-to-many alignment.  This saves time and
+   a considerable amount of space.  Implies `--skip_dotplot_1`.
+
  * `--last_split_args`: default to empty value.  It can be used to pass
    options to `last-split`, for instance to set `-m1e-5` like in earlier
-   versions of this pipeline.
+   versions of this pipeline.  Note that if you used `--skip_m2m`, the
+   split parameters have to be passed in `--lastal_args` and have
+   different names (see _split options_ in the [lastal documentation][]).
 
  * The dotplots can be modified by overriding defaults and passing new
    arguments via the `--dotplot_options` argument.  Defaults and available
@@ -81,6 +86,7 @@ that indicates in which order they were created.
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
   [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
+  [lastal documentation]: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
 
 ## Fixed arguments (taken from the [LAST cookbook][])
 

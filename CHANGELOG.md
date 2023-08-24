@@ -1,5 +1,8 @@
 ## 6.0.0
 
+ - New `--skip_m2m` to skip the generation of the many-to-many alignment,
+   which consumes a large amount of time and disk space.
+
  - Change default `-m` value of `last-split` to the default (`-m1` at the
    moment) and add a new option `--last_split_args` to allow setting other
    values (such as `-m1e-5` that was used previously).
@@ -11,7 +14,6 @@
    indexed genome was large enough to cause the generation of multiple
    `prj` (or `des`) files.  Version `5.2.1` attempted to solve the
    problem but failed.
->>>>>>> main
 
 ## 5.2.0
 

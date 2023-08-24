@@ -1,10 +1,17 @@
-# Change log
-
 ## 6.0.0
 
  - Change default `-m` value of `last-split` to the default (`-m1` at the
    moment) and add a new option `--last_split_args` to allow setting other
    values (such as `-m1e-5` that was used previously).
+
+## 5.2.2
+
+ - Guess index file name by searching for `prj` files and selecting
+   the shortest base name.  The previous method failed when the
+   indexed genome was large enough to cause the generation of multiple
+   `prj` (or `des`) files.  Version `5.2.1` attempted to solve the
+   problem but failed.
+>>>>>>> main
 
 ## 5.2.0
 

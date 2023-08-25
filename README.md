@@ -81,6 +81,11 @@ that indicates in which order they were created.
    and visually uninformative on large genomes with shared repeats.
    File suffixes (see above) will not change.
 
+ * By default the LAST index is named `target` and the ouput files are named
+   from the query IDs.  Use the `--targetName` option to provide a name
+   that will be used for the LAST index and that will be prefixed to the
+   query IDs with a `___` separator.
+
   [`last-dotplot`]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
   [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst

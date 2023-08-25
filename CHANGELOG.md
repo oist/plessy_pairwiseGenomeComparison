@@ -7,6 +7,9 @@
    moment) and add a new option `--last_split_args` to allow setting other
    values (such as `-m1e-5` that was used previously).
 
+ - New `--targetName` option to include target genome names in the
+   output files.
+
 ## 5.2.2
 
  - Guess index file name by searching for `prj` files and selecting

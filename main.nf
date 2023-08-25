@@ -46,6 +46,11 @@ if (params.query) {
         .set { query }
 }
 
+if (params.targetName) {
+    target = target.map { row -> [ [id: params.targetName]                     , row.tail() ] }
+    query  = query.map  { row -> [ [id: params.targetName + '___' + row[0].id] , row.tail() ] }
+}
+
 // Optionally mask the genome
     if (params.with_windowmasker) {
         BLAST_WINDOWMASKER ( target )

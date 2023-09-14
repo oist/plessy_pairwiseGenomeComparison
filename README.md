@@ -86,6 +86,7 @@ that indicates in which order they were created.
    that will be used for the LAST index and that will be prefixed to the
    query IDs with a `___` separator.
 
+  [`lastal`]:       https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
   [`last-dotplot`]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
   [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
@@ -104,6 +105,19 @@ that indicates in which order they were created.
  * The second call to `last-split` runs with `-m1e-5` to omit alignments with
    mismap probability > 10<sup>−5</sup>.
 
+## Read alignment mode
+
+The `--read_align` option can be used to align sequencing reads to a genome.
+The output will be a single alignment file with a many-to-one relationship
+between the _target_ genome and the _query_ reads.  The alignment process is
+similar with the `--skip_m2m` mode, with the difference that the scoring matrix
+computed by [`last-train`][] is allowed to be asymmetric.  FASTA and FASTQ
+formats are allowed, and by default the quality values are ignored.  This can
+be changed by passing `keep`, `sanger`, `solexa`, or `illumina` as an argument
+to `--read_align` as described in the [`lastal`][] documentation.  The default
+seeding scheme is used but it may be a good idea to use `RY32` instead to speed
+up the alignment. 
+
 ## Usage
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main \
@@ -116,6 +130,11 @@ This pipeline can use the institutional profiles defined in _nf-core_
 
 ## Test
 
+Note that your tests may fail if you do not set the `-profile` option to a
+configuration suitable for your system.  See <https://nf-co.re/configs> for
+common ones.  You also need to ensure that your work directory is writable by
+your compute nodes, by setting the `-work-dir` option appropriately.
+
 ### test remote
 
     nextflow run oist/plessy_pairwiseGenomeComparison -r main \
@@ -127,6 +146,13 @@ This pipeline can use the institutional profiles defined in _nf-core_
     nextflow run ./main.nf \
         --input testInput.tsv \
         --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta
+
+### test read alignment mode (remote)
+
+    nextflow run oist/plessy_pairwiseGenomeComparison -r main \
+        --target https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta \
+        --query https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/nanopore/fastq/test_2.fastq.gz \
+        --read_align
 
 ## Advanced use
 

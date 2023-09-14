@@ -5,15 +5,22 @@ nextflow.enable.dsl = 2
 if (params.skip_m2m) {
     lastal_args = "${params.lastal_args} --split --split-f=MAF+"
     lastal_suffix = '.03.split'
+    train_args = '--revsym'
+} else if (params.read_align) {
+    lastal_args = "${params.lastal_args} --split"
+    lastal_suffix = '.03.split'
+    readAlignMode = true
+    train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
 } else {
     lastal_args = "${params.lastal_args}"
     lastal_suffix = '.01.original_alignment'
+    train_args = '--revsym'
 }
 
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmaker/main.nf' addParams( option: [:] )
 include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -R01"] )
 include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -R11"] )
-include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args':"--revsym ${params.lastal_args}"] )
+include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':lastal_args, 'suffix':lastal_suffix] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_1 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.02.plot'] )
 include { LAST_SPLIT   as LAST_SPLIT_1   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"-fMAF+ ${params.last_split_args}", 'suffix':'.03.split'] )
@@ -75,8 +82,8 @@ if (params.targetName) {
 // Align the genomes
     LAST_LASTAL    ( lastal_query,
                      index )
-// If --skip_m2m the result is a many-to-one alignment.
-    if (params.skip_m2m) {
+// If --skip_m2m or --read_align the result is a many-to-one alignment.
+    if (params.skip_m2m | readAlignMode) {
         many_to_one_aln = LAST_LASTAL.out.maf
     } else {
 // Otherwise we run last-split separately and optionally last-dotplot
@@ -86,14 +93,16 @@ if (params.targetName) {
         LAST_SPLIT_1   ( LAST_LASTAL.out.maf )
         many_to_one_aln = LAST_SPLIT_1.out.maf
     }
-
-    if (! params.skip_dotplot_2 ) {
+// Skip the last steps if we are aligning reads
+    if (! readAlignMode) {
+        if (! params.skip_dotplot_2 ) {
         LAST_DOTPLOT_2 ( many_to_one_aln, 'png' )
-    }
-    LAST_SPLIT_2   ( many_to_one_aln )
-    if (! params.skip_dotplot_3 ) {
+        }
+        LAST_SPLIT_2   ( many_to_one_aln )
+        if (! params.skip_dotplot_3 ) {
         LAST_DOTPLOT_3 ( LAST_SPLIT_2.out.maf,  'png' )
+        }
+        LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
+        LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
     }
-    LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
-    LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
 }

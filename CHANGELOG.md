@@ -1,3 +1,8 @@
+## 6.1.0
+
+ - New `--read_align` option to utilise the pipeline for mapping
+   _query_ reads to a _target_ genome.
+
 ## 6.0.0
 
  - New `--skip_m2m` to skip the generation of the many-to-many alignment,

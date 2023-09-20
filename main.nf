@@ -6,6 +6,7 @@ if (params.skip_m2m) {
     lastal_args = "${params.lastal_args} --split --split-f=MAF+"
     lastal_suffix = '.03.split'
     train_args = '--revsym'
+    readAlignMode = false
 } else if (params.read_align) {
     lastal_args = "${params.lastal_args} --split"
     lastal_suffix = '.03.split'
@@ -15,6 +16,7 @@ if (params.skip_m2m) {
     lastal_args = "${params.lastal_args}"
     lastal_suffix = '.01.original_alignment'
     train_args = '--revsym'
+    readAlignMode = false
 }
 
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmaker/main.nf' addParams( option: [:] )

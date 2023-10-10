@@ -1,3 +1,7 @@
+## Upcoming changes
+
+ - Make the postmask step optional.
+
 ## 6.1.0
 
  - New `--read_align` option to utilise the pipeline for mapping

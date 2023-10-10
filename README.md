@@ -13,14 +13,14 @@ genome, post-process the alignments and produce dot plots visualisations
 at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
- - `01.original_alignment` is the many-to-many alignment between _target_ and _query_ genomes.
- - `02.plot`
+ - `01.original_alignment` is the many-to-many alignment between _target_ and _query_ genomes. (optional)
+ - `02.plot` (optional)
  - `03.split` is the many-to-one alignment regions of the _target_ genome are matched at most once by the _query_ genome.
  - `04.plot`
  - `05.split` is the `one-to-one` alignment between the _target_ and _query_ genomes.
  - `06.plot`
- - `07.postmasked` is a filtered `one-to-one` alignment where low-confidence matches made mostly of masked regions are removed.
- - `08.plot`
+ - `07.postmasked` is a filtered `one-to-one` alignment where low-confidence matches made mostly of masked regions are removed. (optional)
+ - `08.plot` (optional)
 
 ## Mandatory parameters
 
@@ -86,8 +86,14 @@ that indicates in which order they were created.
    that will be used for the LAST index and that will be prefixed to the
    query IDs with a `___` separator.
 
+ * Use `--postmask` to filter out the one-to-one alignments that contain a
+   significant fraction of soft-masked (lowercased) sequences, using the
+  [`last-postmask`] tool.  This is not necessary if `lastdb` was run with the
+  `-c` option, which is the default since version `7.0.0`.
+
   [`lastal`]:       https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
   [`last-dotplot`]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-dotplot.rst
+  [`last-postmask`]:https://gitlab.com/mcfrith/last/-/blob/main/doc/last-postmask.rst
   [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst

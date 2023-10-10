@@ -104,7 +104,10 @@ if (params.targetName) {
         if (! params.skip_dotplot_3 ) {
         LAST_DOTPLOT_3 ( LAST_SPLIT_2.out.maf,  'png' )
         }
-        LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
-        LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
+// Optional postmask step
+        if (params.postmask) {
+            LAST_POSTMASK  ( LAST_SPLIT_2.out.maf )
+            LAST_DOTPLOT_4 ( LAST_POSTMASK.out.maf, 'png' )
+        }
     }
 }

@@ -1,6 +1,7 @@
 ## Upcoming changes
 
- - Make the postmask step optional.
+ - Default to soft-mask lowercased letters (option `-c` of `lastdb`), and make
+   the postmask step optional.
 
 ## 6.1.0
 

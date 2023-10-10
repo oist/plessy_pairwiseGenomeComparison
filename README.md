@@ -44,13 +44,13 @@ that indicates in which order they were created.
  * `--seeding_scheme` selects the name of the [LAST seed][]
    The default (`YASS`) searches for “_long-and-weak similarities_” that
    “_allow for mismatches but not gaps_”.  Among alternatives, there
-   are (`NEAR`) for “_short-and-strong (near-identical) similarities_
-   … _with many gaps (insertions and deletions)_” or `RY32` that
-   “_reduces run time and memory use, by only seeking seeds at ~1/32
-   of positions in each sequence_”, which is useful when the purpose
-   of running this pipeline is only to generate whole-genome dotplots,
-   or when sensitivity for tiny fragments may be unnecessary or
-   undesirable.
+   are `NEAR` for “_short-and-strong (near-identical) similarities_
+   … _with many gaps (insertions and deletions)_”, `MAM8` to find _“weak
+   similarities with high sensitivity, but low speed and high memory usage”_
+   or `RY64` that “_reduces run time and memory use, by only seeking seeds at
+   ~1/64 of positions in each sequence_”, which is useful when the purpose of
+   running this pipeline is only to generate whole-genome dotplots, or when
+   sensitivity for tiny fragments may be unnecessary or undesirable.
 
  * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][].
@@ -88,7 +88,7 @@ that indicates in which order they were created.
 
  * Use `--postmask` to filter out the one-to-one alignments that contain a
    significant fraction of soft-masked (lowercased) sequences, using the
-  [`last-postmask`] tool.  This is not necessary if `lastdb` was run with the
+   [`last-postmask`][] tool.  This is not necessary if `lastdb` was run with the
   `-c` option, which is the default since version `7.0.0`.
 
   [`lastal`]:       https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
@@ -102,8 +102,11 @@ that indicates in which order they were created.
 
 ## Fixed arguments (taken from the [LAST cookbook][])
 
- * The `last-train` commands always runs with `--revsym` as the DNA strands
-   play equivalent roles in the studied genomes.
+ * The `lastdb` step soft-masks simple repeats by default, (`-c -R01`).
+
+ * The `last-train` commands runs with `--revsym` as the DNA strands
+   play equivalent roles in the studied genomes, unless the `--read_align`
+   option is selected.
 
  * The first call to `last-split` runs with `-fMAF+` to make it show per-base
    mismap probabilities.

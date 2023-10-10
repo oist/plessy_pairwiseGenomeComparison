@@ -3,6 +3,11 @@
  - Default to soft-mask lowercased letters (option `-c` of `lastdb`), and make
    the postmask step optional.
 
+ - Replace the `-E0.05` option (_“Maximum expected alignments per square
+   giga”_)  with `-D1e9` (_“Report alignments that are expected by chance at
+   most once per LENGTH query letters”_) to match the tutorials closer.  Both
+   options should have similar effects, but `-D` is easier to explain.
+
 ## 6.1.0
 
  - New `--read_align` option to utilise the pipeline for mapping

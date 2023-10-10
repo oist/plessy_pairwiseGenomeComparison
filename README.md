@@ -52,8 +52,9 @@ that indicates in which order they were created.
    running this pipeline is only to generate whole-genome dotplots, or when
    sensitivity for tiny fragments may be unnecessary or undesirable.
 
- * `--lastal_args` defaults to `-E0.05 -C2` and is applied to both
-   the calls to `last-train` and `lastal`, like in the [LAST cookbook][].
+ * `--lastal_args` defaults to `-D1e9 -C2` and is applied to both
+   the calls to `last-train` and `lastal`, like in the [LAST cookbook][]
+   and the [last-genome-alignments][] tutorial.
 
  * `--lastal_params`: path to a file containing alignment parameters
    computed by [`last-train`][] or a [scoring matrix][].  If this option
@@ -99,6 +100,7 @@ that indicates in which order they were created.
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
   [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
   [lastal documentation]: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
+  [last-genome-alignments]: https://github.com/mcfrith/last-genome-alignments
 
 ## Fixed arguments (taken from the [LAST cookbook][])
 

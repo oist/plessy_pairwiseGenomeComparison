@@ -63,11 +63,15 @@ that indicates in which order they were created.
  * `--skip_m2m`: Skip the many-to-many alignment.  This saves time and
    a considerable amount of space.  Implies `--skip_dotplot_1`.
 
- * `--last_split_args`: default to empty value.  It can be used to pass
-   options to `last-split`, for instance to set `-m1e-5` like in earlier
-   versions of this pipeline.  Note that if you used `--skip_m2m`, the
-   split parameters have to be passed in `--lastal_args` and have
-   different names (see _split options_ in the [lastal documentation][]).
+ * By default, `last-split` runs with `-m1e-5` to omit alignments with
+   mismap probability > 10<sup>−5</sup>, but this can be overriden with
+   the `--last_split_mismap` option.
+
+ * `--last_split_args` defaults to empty value and is not very useful at the
+   moment, but is kept for backwards compatibility.  It can be used to pass
+   options to `last-split`.  Note that if you used `--skip_m2m`, the split
+   parameters have to be passed in `--lastal_args` and have different names
+   (see _split options_ in the [lastal documentation][]).
 
  * The dotplots can be modified by overriding defaults and passing new
    arguments via the `--dotplot_options` argument.  Defaults and available
@@ -110,11 +114,8 @@ that indicates in which order they were created.
    play equivalent roles in the studied genomes, unless the `--read_align`
    option is selected.
 
- * The first call to `last-split` runs with `-fMAF+` to make it show per-base
-   mismap probabilities.
-
- * The second call to `last-split` runs with `-m1e-5` to omit alignments with
-   mismap probability > 10<sup>−5</sup>.
+ * `last-split` runs with `-fMAF+` to make it show per-base mismap
+   probabilities, except in read alignment mode (see below).
 
 ## Read alignment mode
 

@@ -2,13 +2,15 @@
 
 nextflow.enable.dsl = 2
 
+last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
+
 if (params.skip_m2m) {
-    lastal_args = "${params.lastal_args} --split --split-f=MAF+"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
     lastal_suffix = '.03.split'
     train_args = '--revsym'
     readAlignMode = false
 } else if (params.read_align) {
-    lastal_args = "${params.lastal_args} --split"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap}"
     lastal_suffix = '.03.split'
     readAlignMode = true
     train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
@@ -25,9 +27,9 @@ include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':lastal_args, 'suffix':lastal_suffix] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_1 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.02.plot'] )
-include { LAST_SPLIT   as LAST_SPLIT_1   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"-fMAF+ ${params.last_split_args}", 'suffix':'.03.split'] )
+include { LAST_SPLIT   as LAST_SPLIT_1   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"-fMAF+ ${last_split_args}", 'suffix':'.03.split'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_2 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.04.plot'] )
-include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"--reverse ${params.last_split_args}", 'suffix':'.05.split'] )
+include { LAST_SPLIT   as LAST_SPLIT_2   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"--reverse ${last_split_args}", 'suffix':'.05.split'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_3 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.06.plot'] )
 include { LAST_POSTMASK                  } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.07.postmasked'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_4 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.08.plot'] )

@@ -11,11 +11,11 @@ process BLAST_WINDOWMASKER {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? 'bioconda::blast=2.14.0' : null)
+    conda (params.enable_conda ? 'bioconda::blast=2.15.0' : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container 'https://depot.galaxyproject.org/singularity/blast:2.14.0--pl5321h6f7f691_2'
+        container 'https://depot.galaxyproject.org/singularity/blast:2.15.0--pl5321h6f7f691_1'
     } else {
-        container 'quay.io/biocontainers/blast:2.14.0--pl5321h6f7f691_2'
+        container 'quay.io/biocontainers/blast:2.15.0--pl5321h6f7f691_1'
     }
 
     input:

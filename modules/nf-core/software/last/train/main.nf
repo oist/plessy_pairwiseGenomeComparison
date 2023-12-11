@@ -37,7 +37,7 @@ process LAST_TRAIN {
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
-        > ${prefix}.\$INDEX_NAME.par
+        > ${prefix}.par
 
     lastdb --version | sed 's/lastdb //' > ${software}.version.txt
     """

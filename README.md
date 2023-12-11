@@ -16,9 +16,9 @@ that indicates in which order they were created.
  - `01.original_alignment` is the many-to-many alignment between _target_ and _query_ genomes. (optional)
  - `02.plot` (optional)
  - `03.split` is the many-to-one alignment regions of the _target_ genome are matched at most once by the _query_ genome.
- - `04.plot`
+ - `04.plot` (optional)
  - `05.split` is the `one-to-one` alignment between the _target_ and _query_ genomes.
- - `06.plot`
+ - `06.plot` (optional)
  - `07.postmasked` is a filtered `one-to-one` alignment where low-confidence matches made mostly of masked regions are removed. (optional)
  - `08.plot` (optional)
 

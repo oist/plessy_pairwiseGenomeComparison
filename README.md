@@ -14,13 +14,13 @@ at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
  - `00.par` is the alignment parameters computed by `last-train` (optional)
- - `01.original_alignment` is the _many-to-many_ alignment between _target_ and _query_ genomes. (optional)
+ - `01.original_alignment` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional)
  - `02.plot` (optional)
- - `03.split` is the _many-to-one_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
+ - `03.split` is the _**many-to-one**_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
  - `04.plot` (optional)
- - `05.split` is the _one-to-one_ alignment between the _target_ and _query_ genomes.
+ - `05.split` is the _**one-to-one**_ alignment between the _target_ and _query_ genomes.
  - `06.plot` (optional)
- - `07.postmasked` is a filtered _one-to-one_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
+ - `07.postmasked` is a filtered _**one-to-one**_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
  - `08.plot` (optional)
 
 ## Mandatory parameters

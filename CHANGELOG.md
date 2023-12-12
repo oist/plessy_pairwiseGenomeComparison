@@ -1,4 +1,4 @@
-## Upcoming changes
+## 7.0.0
 
  - `--skip_m2m` now defaults to `true`.
 

@@ -5,17 +5,17 @@ nextflow.enable.dsl = 2
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
 
 if (params.skip_m2m) {
-    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} --split-f=MAF+ -S1"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
     lastal_suffix = '.03.split'
     train_args = '--revsym'
     readAlignMode = false
 } else if (params.read_align) {
-    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} -S1"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap}"
     lastal_suffix = '.03.split'
     readAlignMode = true
     train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
 } else {
-    lastal_args = "${params.lastal_args} -S1"
+    lastal_args = "${params.lastal_args}"
     lastal_suffix = '.01.original_alignment'
     train_args = '--revsym'
     readAlignMode = false

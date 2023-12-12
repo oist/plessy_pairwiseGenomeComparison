@@ -1,5 +1,8 @@
 ## Upcoming changes
 
+ - Add a `--lastal_extra_args` option to pass `lastal` arguments that
+   are not recognised by `last-train`.
+
  - Change the suffix of the parameter file from `par` to `00.par` for better
    sorting of the file names.
 

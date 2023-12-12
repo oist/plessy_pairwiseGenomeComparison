@@ -57,6 +57,9 @@ that indicates in which order they were created.
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][]
    and the [last-genome-alignments][] tutorial.
 
+ * `--lastal_extr_args` is only passed to `lastal` and should be used for
+   arguments that are not recognised by `last-train`.
+
  * `--lastal_params`: path to a file containing alignment parameters
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
@@ -71,8 +74,8 @@ that indicates in which order they were created.
  * `--last_split_args` defaults to empty value and is not very useful at the
    moment, but is kept for backwards compatibility.  It can be used to pass
    options to `last-split`.  Note that if you used `--skip_m2m`, the split
-   parameters have to be passed in `--lastal_args` and have different names
-   (see _split options_ in the [lastal documentation][]).
+   parameters have to be passed in `--lastal_extra_args` and have different
+   names (see _split options_ in the [lastal documentation][]).
 
  * The dotplots can be modified by overriding defaults and passing new
    arguments via the `--dotplot_options` argument.  Defaults and available

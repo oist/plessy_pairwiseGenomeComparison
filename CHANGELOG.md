@@ -1,5 +1,7 @@
 ## Upcoming changes
 
+ - `--skip_m2m` now defaults to `true`.
+
  - Add a `--one_to_one_only` option to prevent copying the `lastal` alignment
    to the results folder, thus saving disk space.
 

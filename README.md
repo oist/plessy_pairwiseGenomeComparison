@@ -64,8 +64,12 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
- * `--skip_m2m`: Skip the many-to-many alignment.  This saves time and
-   a considerable amount of space.  Implies `--skip_dotplot_1`.
+ * `--skip_m2m`: (default: true) Skip the many-to-many alignment.  This saves
+   time and a considerable amount of space.  Implies `--skip_dotplot_1`.
+
+ * `--one_to_one_only`: do not save the results of the `lastal` step.  With
+   `--skip_m2m` `true` (default), the only alignment file will be the
+   _one-to-one_ output of `last-split`, thus saving disk space.
 
  * By default, `last-split` runs with `-m1e-5` to omit alignments with
    mismap probability > 10<sup>−5</sup>, but this can be overriden with

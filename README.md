@@ -196,7 +196,7 @@ label) to 3 days instead of the 1 hour default.
 
 ## Semantic versioning
 
-I will apply [semantic versioning](https://semver.org/) to this pipeline:
+I apply [semantic versioning](https://semver.org/) to this pipeline:
 
  - Major increment when the interface changes in a way that is
    backwards-incompatible, in the sense that a run with the same command and

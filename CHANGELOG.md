@@ -1,5 +1,7 @@
 ## Upcoming changes
 
+ - Index both strands to speed up computation (at the expense of memory usage).
+
  - Add a `--last_split_mismap` option and revert the default to `1e-5`. 
 
  - Update LAST to version 1519 and `windowmasker` to version 2.15.0.

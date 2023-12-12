@@ -5,25 +5,25 @@ nextflow.enable.dsl = 2
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
 
 if (params.skip_m2m) {
-    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} --split-f=MAF+ -S1"
     lastal_suffix = '.03.split'
     train_args = '--revsym'
     readAlignMode = false
 } else if (params.read_align) {
-    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap}"
+    lastal_args = "${params.lastal_args} --split-m=${params.last_split_mismap} -S1"
     lastal_suffix = '.03.split'
     readAlignMode = true
     train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
 } else {
-    lastal_args = "${params.lastal_args}"
+    lastal_args = "${params.lastal_args} -S1"
     lastal_suffix = '.01.original_alignment'
     train_args = '--revsym'
     readAlignMode = false
 }
 
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmasker/main.nf' addParams( option: [:] )
-include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -c -R01"] )
-include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -c -R11"] )
+include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -c -R01 -S2"] )
+include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seeding_scheme} -c -R11 -S2"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}"] )
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':lastal_args, 'suffix':lastal_suffix] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_1 } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.02.plot'] )

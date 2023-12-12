@@ -102,13 +102,16 @@ that indicates in which order they were created.
   [LAST seed]:      https://gitlab.com/mcfrith/last/-/blob/main/doc/last-seeds.rst
   [LAST cookbook]:  https://gitlab.com/mcfrith/last/-/blob/main/doc/last-cookbook.rst
   [`last-train`]:   https://gitlab.com/mcfrith/last/-/blob/main/doc/last-train.rst
+  [LAST tuning]:    https://gitlab.com/mcfrith/last/-/blob/main/doc/last-tuning.rst
   [scoring matrix]: https://gitlab.com/mcfrith/last/-/blob/main/doc/last-matrices.rst
   [lastal documentation]: https://gitlab.com/mcfrith/last/-/blob/main/doc/lastal.rst
   [last-genome-alignments]: https://github.com/mcfrith/last-genome-alignments
 
-## Fixed arguments (taken from the [LAST cookbook][])
+## Fixed arguments (taken from the [LAST cookbook][] and the [LAST tuning][] manual)
 
  * The `lastdb` step soft-masks simple repeats by default, (`-c -R01`).
+   It indexes both strands (`-S2`), which increases speed at the expense
+   of memory usage.
 
  * The `last-train` commands runs with `--revsym` as the DNA strands
    play equivalent roles in the studied genomes, unless the `--read_align`

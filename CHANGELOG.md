@@ -1,5 +1,8 @@
 ## Upcoming changes
 
+ - Change the suffix of the parameter file from `par` to `00.par` for better
+   sorting of the file names.
+
  - Stop providing a copy of the LAST index in the results folder.
 
  - Index both strands to speed up computation (at the expense of memory usage).

@@ -7,9 +7,12 @@ options        = initOptions(params.options)
 process LAST_LASTAL {
     tag "$meta.id"
     label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+
+    if (! params.one_to_one_only) {
+        publishDir "${params.outdir}",
+            mode: params.publish_dir_mode,
+            saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
+    }
 
     conda (params.enable_conda ? "bioconda::last=1519" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {

@@ -1,5 +1,8 @@
 ## Upcoming changes
 
+ - Add a `--one_to_one_only` option to prevent copying the `lastal` alignment
+   to the results folder, thus saving disk space.
+
  - Add a `--lastal_extra_args` option to pass `lastal` arguments that
    are not recognised by `last-train`.
 

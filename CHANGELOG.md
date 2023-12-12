@@ -1,5 +1,7 @@
 ## Upcoming changes
 
+ - Stop providing a copy of the LAST index in the results folder.
+
  - Index both strands to speed up computation (at the expense of memory usage).
 
  - Add a `--last_split_mismap` option and revert the default to `1e-5`. 

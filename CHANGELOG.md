@@ -1,3 +1,7 @@
+## 7.1.0
+
+ - Output a text-formatted trace file to profile resource usage.
+
 ## 7.0.0
 
  - `--skip_m2m` now defaults to `true`.

@@ -2,6 +2,8 @@
 
  - Output a text-formatted trace file to profile resource usage.
 
+ - Reduce the number of CPUs of `last-split` tasks to 2.
+
 ## 7.0.0
 
  - `--skip_m2m` now defaults to `true`.

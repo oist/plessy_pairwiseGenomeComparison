@@ -46,5 +46,6 @@ process LAST_LASTAL {
     # which makes its checksum non-reproducible.
 
     echo \$(lastal --version 2>&1) | sed 's/lastal //' > ${software}.version.txt
+    grep -qv -e oom-kill -e out-of-memory .command.log
     """
 }

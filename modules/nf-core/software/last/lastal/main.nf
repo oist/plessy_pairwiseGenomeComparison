@@ -21,6 +21,9 @@ process LAST_LASTAL {
         container "quay.io/biocontainers/last:1519--h43eeafb_0"
     }
 
+    errorStrategy 'retry'
+    maxRetries 2
+
     input:
     tuple val(meta), path(fastx), path (param_file)
     path index

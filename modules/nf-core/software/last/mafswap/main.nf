@@ -11,11 +11,11 @@ process LAST_MAFSWAP {
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::last=1519" : null)
+    conda (params.enable_conda ? "bioconda::last=1522" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/last:1519--h43eeafb_0"
+        container "https://depot.galaxyproject.org/singularity/last:1522--h43eeafb_0"
     } else {
-        container "quay.io/biocontainers/last:1519--h43eeafb_0"
+        container "quay.io/biocontainers/last:1522--h43eeafb_0"
     }
 
     input:

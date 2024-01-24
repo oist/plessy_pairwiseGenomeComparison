@@ -48,8 +48,8 @@ that indicates in which order they were created.
    are `NEAR` for “_short-and-strong (near-identical) similarities_
    … _with many gaps (insertions and deletions)_”, `MAM8` to find _“weak
    similarities with high sensitivity, but low speed and high memory usage”_
-   or `RY64` that “_reduces run time and memory use, by only seeking seeds at
-   ~1/64 of positions in each sequence_”, which is useful when the purpose of
+   or `RY128` that “_reduces run time and memory use, by only seeking seeds at
+   ~1/128 of positions in each sequence_”, which is useful when the purpose of
    running this pipeline is only to generate whole-genome dotplots, or when
    sensitivity for tiny fragments may be unnecessary or undesirable.
 
@@ -138,7 +138,7 @@ computed by [`last-train`][] is allowed to be asymmetric.  FASTA and FASTQ
 formats are allowed, and by default the quality values are ignored.  This can
 be changed by passing `keep`, `sanger`, `solexa`, or `illumina` as an argument
 to `--read_align` as described in the [`lastal`][] documentation.  The default
-seeding scheme is used but it may be a good idea to use `RY32` instead to speed
+seeding scheme is used but it may be a good idea to use `RY128` instead to speed
 up the alignment. 
 
 ## Usage

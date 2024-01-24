@@ -1,8 +1,8 @@
 ## 7.1.0
 
  - Output a text-formatted trace file to profile resource usage.
-
  - Reduce the number of CPUs of `last-split` tasks to 2.
+ - Update to LAST 1522 to allow for RY128 seeds.
 
 ## 7.0.0
 

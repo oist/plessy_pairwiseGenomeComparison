@@ -4,9 +4,9 @@ nextflow.enable.dsl = 2
 
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
 
-if (params.skip_m2m) {
-    lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
-    lastal_suffix = '.03.split'
+if (params.m2m) {
+    lastal_args = "${params.lastal_args} ${params.lastal_extra_args}"
+    lastal_suffix = '.01.original_alignment'
     train_args = '--revsym'
     readAlignMode = false
 } else if (params.read_align) {
@@ -15,8 +15,8 @@ if (params.skip_m2m) {
     readAlignMode = true
     train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
 } else {
-    lastal_args = "${params.lastal_args} ${params.lastal_extra_args}"
-    lastal_suffix = '.01.original_alignment'
+    lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
+    lastal_suffix = '.03.split'
     train_args = '--revsym'
     readAlignMode = false
 }
@@ -86,16 +86,17 @@ if (params.targetName) {
 // Align the genomes
     LAST_LASTAL    ( lastal_query,
                      index )
-// If --skip_m2m or --read_align the result is a many-to-one alignment.
-    if (params.skip_m2m | readAlignMode) {
-        many_to_one_aln = LAST_LASTAL.out.maf
-    } else {
-// Otherwise we run last-split separately and optionally last-dotplot
+// If --m2m the result is a many-to-many alignment and we need last-split
+// to compute the many-to-one alignment.
+    if (params.m2m) {
         if (! params.skip_dotplot_1 ) {
             LAST_DOTPLOT_1 ( LAST_LASTAL.out.maf, 'png' )
         }
         LAST_SPLIT_1   ( LAST_LASTAL.out.maf )
         many_to_one_aln = LAST_SPLIT_1.out.maf
+    } else {
+// Otherwise the output of lastal is a already a many_to_one alignment.
+        many_to_one_aln = LAST_LASTAL.out.maf
     }
 // Skip the last steps if we are aligning reads
     if (! readAlignMode) {

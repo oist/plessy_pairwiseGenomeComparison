@@ -3,6 +3,9 @@
  - Rename the `--seeding_scheme` option to just `--seed`, which is shorter
    and easier to remember.
 
+ - Rename the `--skip_m2m` (default `true`) option to just `--m2m` (default
+   `false`).
+
 ## 7.1.0
 
  - Output a text-formatted trace file to profile resource usage.

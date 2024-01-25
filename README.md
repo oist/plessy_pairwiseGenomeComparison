@@ -14,7 +14,7 @@ at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
  - `00.par` is the alignment parameters computed by `last-train` (optional)
- - `01.original_alignment` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional)
+ - `01.original_alignment` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional through the `--m2m` option)
  - `02.plot` (optional)
  - `03.split` is the _**many-to-one**_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
  - `04.plot` (optional)
@@ -64,12 +64,12 @@ that indicates in which order they were created.
    computed by [`last-train`][] or a [scoring matrix][].  If this option
    is not used, the pipeline will run `last-train` for each query.
 
- * `--skip_m2m`: (default: true) Skip the many-to-many alignment.  This saves
-   time and a considerable amount of space.  Implies `--skip_dotplot_1`.
+ * `--m2m`: (default: false) Compute and output the many-to-many alignment.
+   This adds time and can comsume considerable amount of space; use only
+   if you need that data.
 
- * `--one_to_one_only`: do not save the results of the `lastal` step.  With
-   `--skip_m2m` `true` (default), the only alignment file will be the
-   _one-to-one_ output of `last-split`, thus saving disk space.
+ * `--one_to_one_only`: do not copy the other alignments to the results
+   folder, thus saving disk space.
 
  * By default, `last-split` runs with `-m1e-5` to omit alignments with
    mismap probability > 10<sup>−5</sup>, but this can be overriden with

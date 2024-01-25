@@ -42,7 +42,7 @@ that indicates in which order they were created.
    soft-masking is erased, to match the behaviour of the pipeline when
    this option is not selected.
 
- * `--seeding_scheme` selects the name of the [LAST seed][]
+ * `--seed` selects the name of the [LAST seed][]
    The default (`YASS`) searches for “_long-and-weak similarities_” that
    “_allow for mismatches but not gaps_”.  Among alternatives, there
    are `NEAR` for “_short-and-strong (near-identical) similarities_

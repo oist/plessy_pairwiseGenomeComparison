@@ -1,3 +1,8 @@
+## Upcoming changes for version 8.0.0
+
+ - Rename the `--seeding_scheme` option to just `--seed`, which is shorter
+   and easier to remember.
+
 ## 7.1.0
 
  - Output a text-formatted trace file to profile resource usage.

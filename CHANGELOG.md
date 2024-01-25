@@ -6,6 +6,8 @@
  - Rename the `--skip_m2m` (default `true`) option to just `--m2m` (default
    `false`).
 
+ - Rename the files and options to clearly indicate `m2m`, `m2o` and `o2o`.
+
 ## 7.1.0
 
  - Output a text-formatted trace file to profile resource usage.

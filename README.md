@@ -14,14 +14,14 @@ at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
  - `00.par` is the alignment parameters computed by `last-train` (optional)
- - `01.original_alignment` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional through the `--m2m` option)
- - `02.plot` (optional)
- - `03.split` is the _**many-to-one**_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
- - `04.plot` (optional)
- - `05.split` is the _**one-to-one**_ alignment between the _target_ and _query_ genomes.
- - `06.plot` (optional)
- - `07.postmasked` is a filtered _**one-to-one**_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
- - `08.plot` (optional)
+ - `01.m2m_aln` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional through the `--m2m` option)
+ - `02.m2m_plot` (optional)
+ - `03.m2o_aln` is the _**many-to-one**_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
+ - `04.m2o_plot` (optional)
+ - `05.o2o_aln` is the _**one-to-one**_ alignment between the _target_ and _query_ genomes.
+ - `06.o2o_plot` (optional)
+ - `07.o2o_postmasked_aln` is a filtered _**one-to-one**_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
+ - `08.o2o_postmasked_plot` (optional)
 
 ## Mandatory parameters
 
@@ -77,9 +77,10 @@ that indicates in which order they were created.
 
  * `--last_split_args` defaults to empty value and is not very useful at the
    moment, but is kept for backwards compatibility.  It can be used to pass
-   options to `last-split`.  Note that if you used `--skip_m2m`, the split
-   parameters have to be passed in `--lastal_extra_args` and have different
-   names (see _split options_ in the [lastal documentation][]).
+   options to `last-split`.  Note that if you used `--m2m false` (which is
+   the default), the split parameters have to be passed in
+   `--lastal_extra_args` and have different names (see _split options_ in the
+   [lastal documentation][]).
 
  * The dotplots can be modified by overriding defaults and passing new
    arguments via the `--dotplot_options` argument.  Defaults and available
@@ -89,7 +90,7 @@ that indicates in which order they were created.
    (`--sort2=3 --strands2=1`). For readability, their names are written
    horizontally (`--rot2=h`).
 
- * Use `--skip_dotplot_1`, `--skip_dotplot_2`, `--skip_dotplot_3` to
+ * Use `--skip_dotplot_m2m`, `--skip_dotplot_m2o`, `--skip_dotplot_o2o` to
    skip the production of the dot plots that can be computationally expensive
    and visually uninformative on large genomes with shared repeats.
    File suffixes (see above) will not change.

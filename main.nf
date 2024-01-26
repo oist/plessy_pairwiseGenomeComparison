@@ -2,21 +2,26 @@
 
 nextflow.enable.dsl = 2
 
+// Many-to-one is the default.
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
+lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
+lastal_suffix = '.03.m2o_aln'
 
+// If many-to-many is requested, do not split and set correct file name.
+// params.m2m will be checked again later to generate the many-to-one alignment
 if (params.m2m) {
     lastal_args = "${params.lastal_args} ${params.lastal_extra_args}"
     lastal_suffix = '.01.m2m_aln'
-    train_args = '--revsym'
-    readAlignMode = false
-} else if (params.read_align) {
-    lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap}"
-    lastal_suffix = '.03.m2o_aln'
+}
+
+// Read alignment mode
+if (params.read_align) {
     readAlignMode = true
+    // In case --read_align was given a string value
     train_args = (params.read_align == true) ? '-Q0' : "-Q${params.read_align}"
+    // No need for MAF+ format as no one-to-one alignment will be computed
+    lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap}"
 } else {
-    lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
-    lastal_suffix = '.03.m2o_aln'
     train_args = '--revsym'
     readAlignMode = false
 }
@@ -89,7 +94,7 @@ if (params.targetName) {
 // If --m2m the result is a many-to-many alignment and we need last-split
 // to compute the many-to-one alignment.
     if (params.m2m) {
-        if (! params.skip_dotplot_m2m ) {
+        if (! (params.skip_dotplot_m2m | readAlignMode ) ) {
             LAST_DOTPLOT_M2M ( LAST_LASTAL.out.maf, 'png' )
         }
         LAST_SPLIT_M2O   ( LAST_LASTAL.out.maf )

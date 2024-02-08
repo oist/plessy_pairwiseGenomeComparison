@@ -1,5 +1,9 @@
 ## Upcoming changes for version 8.0.0
 
+ - Upgrade LAST to version 1541.  This introduces seed-specific defaults
+   for the maximum repeat unit length when the _target_ genome is
+   soft-masked by `lastdb`.
+
  - Rename the `--seeding_scheme` option to just `--seed`, which is shorter
    and easier to remember.
 

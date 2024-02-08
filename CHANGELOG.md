@@ -1,5 +1,8 @@
 ## Upcoming changes for version 8.0.0
 
+ - Use default `-D` value (total input length) for `last-train`.  Keep
+   `-D1e9` for `lastal`.
+
  - Upgrade LAST to version 1541.  This introduces seed-specific defaults
    for the maximum repeat unit length when the _target_ genome is
    soft-masked by `lastdb`.

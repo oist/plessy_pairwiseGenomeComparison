@@ -1,4 +1,4 @@
-## Upcoming changes for version 8.0.0
+## 8.0.0
 
  - Use default `-D` value (total input length) for `last-train`.  Keep
    `-D1e9` for `lastal`.

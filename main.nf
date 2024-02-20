@@ -2,7 +2,9 @@
 
 nextflow.enable.dsl = 2
 
-// Many-to-one is the default.
+
+// DNA-DNA, many-to-one is the default.
+lastdb_core_args = "-Q0 -u${params.seed} -c -S2"
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
 lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
 lastal_suffix = '.03.m2o_aln'
@@ -26,9 +28,24 @@ if (params.read_align) {
     readAlignMode = false
 }
 
+// Protein mode
+if (params.seed == "PSEUDO") {
+    proteinDNA = true
+    readAlignMode = true // to skip the end
+    params.m2m = false // to skip the end
+    params.skip_dotplot_m2m = true
+    params.skip_dotplot_m2o = true
+    params.skip_dotplot_o2o = true
+    lastdb_core_args = "-q -uPSEUDO -c"
+    train_args = "--codon"
+    lastal_args = "${params.lastal_args} ${params.lastal_extra_args}"
+    lastal_suffix = '.01.m2m_aln'
+}
+
+
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmasker/main.nf' addParams( option: [:] )
-include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seed} -c -R01 -S2"] )
-include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "-Q0 -u${params.seed} -c -R11 -S2"] )
+include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R01"] )
+include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R11"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}", 'suffix':'.00'])
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':lastal_args, 'suffix':lastal_suffix] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_M2M } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.02.m2m_plot'] )

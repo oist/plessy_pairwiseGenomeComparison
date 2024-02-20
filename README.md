@@ -178,6 +178,13 @@ your compute nodes, by setting the `-work-dir` option appropriately.
         --query https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/nanopore/fastq/test_2.fastq.gz \
         --read_align
 
+### test protein alignment mode (remote)
+
+    nextflow run oist/plessy_pairwiseGenomeComparison -r main \
+        --target https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/genome/proteome.fasta.gz \
+        --query  https://github.com/nf-core/test-datasets/raw/modules/data/genomics/sarscov2/genome/genome.fasta \
+        --seed PSEUDO
+
 ## Advanced use
 
 ### Reports

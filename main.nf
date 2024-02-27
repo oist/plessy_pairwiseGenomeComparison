@@ -9,7 +9,7 @@ lastal_suffix = '.03.m2o_aln'
 
 // If many-to-many is requested, do not split and set correct file name.
 // params.m2m will be checked again later to generate the many-to-one alignment
-if (params.m2m) {
+if (params.m2m | params.o2m) {
     lastal_args = "${params.lastal_args} ${params.lastal_extra_args}"
     lastal_suffix = '.01.m2m_aln'
 }
@@ -36,6 +36,8 @@ include { LAST_SPLIT   as LAST_SPLIT_M2O   } from './modules/nf-core/software/la
 include { LAST_DOTPLOT as LAST_DOTPLOT_M2O } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.04.m2o_plot'] )
 include { LAST_SPLIT   as LAST_SPLIT_O2O   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"--reverse ${last_split_args}", 'suffix':'.05.o2o_aln'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_O2O } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.06.o2o_plot'] )
+include { LAST_SPLIT   as LAST_SPLIT_O2M   } from './modules/nf-core/software/last/split/main.nf'    addParams( options: ['args':"--reverse ${last_split_args}", 'suffix':'.05b.o2m_aln'] )
+include { LAST_DOTPLOT as LAST_DOTPLOT_O2M } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.06n.o2m_plot'] )
 include { LAST_POSTMASK                    } from './modules/nf-core/software/last/postmask/main.nf' addParams( options: ['suffix':'.07.o2o_postmasked_aln'] )
 include { LAST_DOTPLOT as LAST_DOTPLOT_POSTMASK } from './modules/nf-core/software/last/dotplot/main.nf'  addParams( options: ['args':"--rot2=h --sort2=3 --strands2=1 ${params.dotplot_options}", 'suffix':'.08.o2o_postmasked_plot'] )
 
@@ -93,12 +95,19 @@ if (params.targetName) {
                      index )
 // If --m2m the result is a many-to-many alignment and we need last-split
 // to compute the many-to-one alignment.
-    if (params.m2m) {
+    if (params.m2m | params.o2m) {
         if (! (params.skip_dotplot_m2m | readAlignMode ) ) {
             LAST_DOTPLOT_M2M ( LAST_LASTAL.out.maf, 'png' )
         }
         LAST_SPLIT_M2O   ( LAST_LASTAL.out.maf )
         many_to_one_aln = LAST_SPLIT_M2O.out.maf
+        // Generate the one-to-many alignments and plots if requested
+        if (params.o2m) {
+            LAST_SPLIT_O2M ( LAST_LASTAL.out.maf )
+            if (! (params.skip_dotplot_o2m) ) {
+                LAST_DOTPLOT_O2M ( LAST_SPLIT_O2M.out.maf, 'png' )
+            }
+        }
     } else {
 // Otherwise the output of lastal is a already a many_to_one alignment.
         many_to_one_aln = LAST_LASTAL.out.maf

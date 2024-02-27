@@ -20,6 +20,8 @@ that indicates in which order they were created.
  - `04.m2o_plot` (optional)
  - `05.o2o_aln` is the _**one-to-one**_ alignment between the _target_ and _query_ genomes.
  - `06.o2o_plot` (optional)
+ - `05b.o2m_aln` is the _**one-to-many**_ alignment between the _target_ and _query_ genomes (optional).
+ - `06b.o2m_plot` (optional)
  - `07.o2o_postmasked_aln` is a filtered _**one-to-one**_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
  - `08.o2o_postmasked_plot` (optional)
 
@@ -68,6 +70,10 @@ that indicates in which order they were created.
    This adds time and can comsume considerable amount of space; use only
    if you need that data.
 
+ * `--o2m`: (default: false) Also compute the _**one-to-many**_ alignments
+   and dotplots.  This is sometimes useful when troubleshooting the
+   preparation of diploid assemblies. 
+
  * `--one_to_one_only`: do not copy the other alignments to the results
    folder, thus saving disk space.
 
@@ -90,10 +96,10 @@ that indicates in which order they were created.
    (`--sort2=3 --strands2=1`). For readability, their names are written
    horizontally (`--rot2=h`).
 
- * Use `--skip_dotplot_m2m`, `--skip_dotplot_m2o`, `--skip_dotplot_o2o` to
-   skip the production of the dot plots that can be computationally expensive
-   and visually uninformative on large genomes with shared repeats.
-   File suffixes (see above) will not change.
+ * Use `--skip_dotplot_m2m`, `--skip_dotplot_m2o`, `--skip_dotplot_o2o`
+   `--skip_dotplot_o2m` to skip the production of the dot plots that can be
+   computationally expensive and visually uninformative on large genomes with
+   shared repeats.  File suffixes (see above) will not change.
 
  * By default the LAST index is named `target` and the ouput files are named
    from the query IDs.  Use the `--targetName` option to provide a name

@@ -18,6 +18,8 @@ process LAST_TRAIN {
         container "quay.io/biocontainers/last:1541--h43eeafb_0"
     }
 
+    errorStrategy 'ignore'
+
     input:
     tuple val(meta), path(fastx)
     path  index

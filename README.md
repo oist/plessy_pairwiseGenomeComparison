@@ -13,7 +13,7 @@ genome, post-process the alignments and produce dot plots visualisations
 at different steps of the workflow.  Each file contains a name suffix
 that indicates in which order they were created.
 
- - `00.par` is the alignment parameters computed by `last-train` (optional)
+ - `00.train` is the alignment parameters computed by `last-train` (optional)
  - `01.m2m_aln` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional through the `--m2m` option)
  - `02.m2m_plot` (optional)
  - `03.m2o_aln` is the _**many-to-one**_ alignment regions of the _target_ genome are matched at most once by the _query_ genome.
@@ -72,7 +72,7 @@ that indicates in which order they were created.
 
  * `--o2m`: (default: false) Also compute the _**one-to-many**_ alignments
    and dotplots.  This is sometimes useful when troubleshooting the
-   preparation of diploid assemblies. 
+   preparation of diploid assemblies.
 
  * `--one_to_one_only`: do not copy the other alignments to the results
    folder, thus saving disk space.

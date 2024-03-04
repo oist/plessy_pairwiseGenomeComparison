@@ -23,7 +23,7 @@ process LAST_TRAIN {
     path  index
 
     output:
-    tuple val(meta), path ("*.par"), emit: param_file
+    tuple val(meta), path ("*.train"), emit: param_file
     path "*.version.txt"           , emit: version
 
     script:
@@ -37,7 +37,7 @@ process LAST_TRAIN {
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
-        > ${prefix}.par
+        > ${prefix}.train
 
     lastdb --version | sed 's/lastdb //' > ${software}.version.txt
     """

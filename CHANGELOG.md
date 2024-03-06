@@ -1,3 +1,9 @@
+## 8.2.1
+
+ - Ignore failures of `last-train` instead of crashing.  The failures are
+   usually caused by the lack of similarity between _target_ and _query_
+   genomes, and it is better to let the other alignments proceed to the end.
+
 ## 8.1.0
 
  - The suffix of the trained parameter files is changed from `.par` to

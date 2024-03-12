@@ -53,7 +53,8 @@ that indicates in which order they were created.
    or `RY128` that “_reduces run time and memory use, by only seeking seeds at
    ~1/128 of positions in each sequence_”, which is useful when the purpose of
    running this pipeline is only to generate whole-genome dotplots, or when
-   sensitivity for tiny fragments may be unnecessary or undesirable.
+   sensitivity for tiny fragments may be unnecessary or undesirable.  Setting
+   the seed to `PSEUDO` triggers protein-to-DNA alignment mode (experimental). 
 
  * `--lastal_args` defaults to `-C2` and is applied to both
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][]

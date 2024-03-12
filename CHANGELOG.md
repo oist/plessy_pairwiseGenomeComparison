@@ -1,3 +1,8 @@
+## 8.3.0
+
+ - Experimental protein mode triggered when the seed is `PSEUDO`.
+   Implementation may change in the future.
+
 ## 8.2.1
 
  - Ignore failures of `last-train` instead of crashing.  The failures are

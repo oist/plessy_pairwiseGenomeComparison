@@ -1,3 +1,18 @@
+## 8.2.1
+
+ - Ignore failures of `last-train` instead of crashing.  The failures are
+   usually caused by the lack of similarity between _target_ and _query_
+   genomes, and it is better to let the other alignments proceed to the end.
+
+## 8.1.0
+
+ - The suffix of the trained parameter files is changed from `.par` to
+   `.train`.
+
+ - New experimental _one to many_ mode (`--o2m`) which may be useful when all
+   possible ways of alignment are needed.  Note that the name of the output
+   files may be changed in the future.
+
 ## 8.0.0
 
  - Use default `-D` value (total input length) for `last-train`.  Keep

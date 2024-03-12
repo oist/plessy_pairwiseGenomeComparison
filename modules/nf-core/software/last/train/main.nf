@@ -18,12 +18,14 @@ process LAST_TRAIN {
         container "quay.io/biocontainers/last:1541--h43eeafb_0"
     }
 
+    errorStrategy 'ignore'
+
     input:
     tuple val(meta), path(fastx)
     path  index
 
     output:
-    tuple val(meta), path ("*.par"), emit: param_file
+    tuple val(meta), path ("*.train"), emit: param_file
     path "*.version.txt"           , emit: version
 
     script:
@@ -37,7 +39,7 @@ process LAST_TRAIN {
         -P $task.cpus \\
         ${index}/\$INDEX_NAME \\
         $fastx \\
-        > ${prefix}.par
+        > ${prefix}.train
 
     lastdb --version | sed 's/lastdb //' > ${software}.version.txt
     """

@@ -27,7 +27,7 @@ This pipeline usually takes in as an input a sample sheet in csv format which co
 
 ## Outputs
 
-For each _query_ genome, this pipeline will align it to the _target_genome, post-process the alignments and produce dot plots visualisations at different steps of the workflow.  Each file contains a name suffix that indicates in which order they were created.
+For each _query_ genome, this pipeline will align it to the _target_ genome, post-process the alignments and produce dot plots visualisations at different steps of the workflow.  Each file contains a name suffix that indicates in which order they were created.
 
  - `.train` is the alignment parameters computed by `last-train` (optional)
  - `m2m_aln` is the _**many-to-many**_ alignment between _target_ and _query_ genomes. (optional through the `--m2m` option)
@@ -53,13 +53,17 @@ For each _query_ genome, this pipeline will align it to the _target_genome, post
 
 ## Options
 
- * `--seed` selects the name of the [LAST seed][]  The default (`YASS`) searches for “_long-and-weak similarities_” that “_allow for mismatches but not gaps_”.  Among alternatives, there are `NEAR` for “_short-and-strong (near-identical) similarities_ … _with many gaps (insertions and deletions)_”, `MAM8` to find _“weak
-   similarities with high sensitivity, but low speed and high memory usage”_
-   or `RY128` that “_reduces run time and memory use, by only seeking seeds at
-   ~1/128 of positions in each sequence_”, which is useful when the purpose of
-   running this pipeline is only to generate whole-genome dotplots, or when
-   sensitivity for tiny fragments may be unnecessary or undesirable.  Setting
-   the seed to `PSEUDO` triggers protein-to-DNA alignment mode (experimental). 
+ * `--seed` selects the name of the [LAST seed][]  The default (`YASS`)
+   searches for “_long-and-weak similarities_” that “_allow for mismatches but
+   not gaps_”.  Among alternatives, there are `NEAR` for “_short-and-strong
+   (near-identical) similarities_ … _with many gaps (insertions and deletions)_”,
+   `MAM8` to find _“weak similarities with high sensitivity, but low speed and
+   high memory usage”_ or `RY128` that “_reduces run time and memory use, by only
+   seeking seeds at ~1/128 of positions in each sequence_”, which is useful when
+   the purpose of running this pipeline is only to generate whole-genome dotplots,
+   or when sensitivity for tiny fragments may be unnecessary or undesirable.
+   Setting the seed to `PSEUDO` triggers protein-to-DNA alignment mode
+   (experimental).
 
  * `--lastal_args` defaults to `-C2` and is applied to both
    the calls to `last-train` and `lastal`, like in the [LAST cookbook][]
@@ -188,7 +192,15 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 If you use this pipeline, please cite:
 
-Extreme genome scrambling in marine planktonic Oikopleura dioica cryptic species_. Charles Plessy, Michael J. Mansfield, Aleksandra Bliznina, Aki Masunaga, Charlotte West, Yongkai Tan, Andrew W. Liu, Jan Grašič, María Sara del Río Pisula, Gaspar Sánchez-Serna, Marc Fabrega-Torrus, Alfonso Ferrández-Roldán, Vittoria Roncalli, Pavla Navratilova, Eric M. Thompson, Takeshi Onuma, Hiroki Nishida, Cristian Cañestro, Nicholas M. Luscombe.  Genome Res. 2024. 34: 426-440; doi:[10.1101/2023.05.09.539028](https://doi.org/10.1101/gr.278295.123). PubMed ID: [38621828](https://pubmed.ncbi.nlm.nih.gov/38621828/)
+_Extreme genome scrambling in marine planktonic Oikopleura dioica cryptic
+species._ Charles Plessy, Michael J. Mansfield, Aleksandra Bliznina, Aki
+Masunaga, Charlotte West, Yongkai Tan, Andrew W. Liu, Jan Grašič, María Sara
+del Río Pisula, Gaspar Sánchez-Serna, Marc Fabrega-Torrus, Alfonso
+Ferrández-Roldán, Vittoria Roncalli, Pavla Navratilova, Eric M. Thompson,
+Takeshi Onuma, Hiroki Nishida, Cristian Cañestro, Nicholas M. Luscombe.  Genome
+Res. 2024. 34: 426-440;
+doi:[10.1101/2023.05.09.539028](https://doi.org/10.1101/gr.278295.123).
+PubMed ID: [38621828](https://pubmed.ncbi.nlm.nih.gov/38621828/)
 
 [OIST research news article](https://www.oist.jp/news-center/news/2024/4/25/oikopleura-who-species-identity-crisis-genome-community)
 

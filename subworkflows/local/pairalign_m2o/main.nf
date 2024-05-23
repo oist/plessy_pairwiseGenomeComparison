@@ -34,15 +34,20 @@ workflow PAIRALIGN_M2O {
 
     // MODULE: last-train
     //
+    if (params.lastal_params) {
+    lastal_query = ch_queries.map { row -> [ row[0], row[1], file(params.lastal_params, checkIfExists: true) ] }
+    } else {
     LAST_TRAIN (
         ch_queries,
         LAST_LASTDB.out.index.map { row -> row[1] }  // Remove metadata map
     )
+    lastal_query = ch_queries.join(LAST_TRAIN.out.param_file)
+    }
 
-    // MODULE: lastal_lastal_m2o
+    // MODULE: last_lastal_m2o
     //
     LAST_LASTAL_M2O (
-        ch_queries.join(LAST_TRAIN.out.param_file),
+        lastal_query,
         LAST_LASTDB.out.index.map { row -> row[1] }  // Remove metadata map
     )
 

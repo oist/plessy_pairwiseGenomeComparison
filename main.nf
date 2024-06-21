@@ -44,6 +44,8 @@ if (params.seed == "PSEUDO") {
 
 
 include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blast/windowmasker/main.nf' addParams( option: [:] )
+include { SEQTK_CUTN as SEQTK_CUTN_TARGET  } from './modules/nf-core/software/seqtk/cutn/main.nf' addParams( option: ['args': '-n 10'] )
+include { SEQTK_CUTN as SEQTK_CUTN_QUERY   } from './modules/nf-core/software/seqtk/cutn/main.nf' addParams( option: ['args': '-n 10'] )
 include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R01"] )
 include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R11"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}", 'suffix':'.00'])
@@ -83,7 +85,18 @@ if (params.query) {
 
 if (params.targetName) {
     target = target.map { row -> [ [id: params.targetName]                     , row.tail() ] }
+}
+
+// Find position of N stretches in genomes.  These are contig boundaries in scaffolds
+SEQTK_CUTN_TARGET (target)
+ch_target_seqtk_cutn = SEQTK_CUTN_TARGET.out.bed.map { id, file -> [ file ] }
+SEQTK_CUTN_QUERY  (query) // before renaming query ids so that file names are proper
+ch_query_seqtk_cutn = SEQTK_CUTN_QUERY.out.bed
+
+if (params.targetName) {
     query  = query.map  { row -> [ [id: params.targetName + '___' + row[0].id] , row.tail() ] }
+    // Also rename query seqtk result channel to facilitate join() later
+    ch_query_seqtk_cutn = ch_query_seqtk_cutn.map { row -> [ [id: params.targetName + '___' + row[0].id] , row.tail() ] }
 }
 
 // Optionally mask the genome
@@ -91,6 +104,7 @@ if (params.targetName) {
         BLAST_WINDOWMASKER ( target )
         target = BLAST_WINDOWMASKER.out.fasta
     }
+
 // Index the target genome
     if (params.with_windowmasker) {
         LAST_LASTDB_R11    ( target )
@@ -114,7 +128,7 @@ if (params.targetName) {
 // to compute the many-to-one alignment.
     if (params.m2m | params.o2m) {
         if (! (params.skip_dotplot_m2m | readAlignMode ) ) {
-            LAST_DOTPLOT_M2M ( LAST_LASTAL.out.maf, 'png' )
+            LAST_DOTPLOT_M2M ( LAST_LASTAL.out.maf.join(ch_query_seqtk_cutn), 'png', ch_target_seqtk_cutn )
         }
         LAST_SPLIT_M2O   ( LAST_LASTAL.out.maf )
         many_to_one_aln = LAST_SPLIT_M2O.out.maf
@@ -122,7 +136,7 @@ if (params.targetName) {
         if (params.o2m) {
             LAST_SPLIT_O2M ( LAST_LASTAL.out.maf )
             if (! (params.skip_dotplot_o2m) ) {
-                LAST_DOTPLOT_O2M ( LAST_SPLIT_O2M.out.maf, 'png' )
+                LAST_DOTPLOT_O2M ( LAST_SPLIT_O2M.out.maf.join(ch_query_seqtk_cutn), 'png', ch_target_seqtk_cutn )
             }
         }
     } else {
@@ -132,16 +146,16 @@ if (params.targetName) {
 // Skip the last steps if we are aligning reads
     if (! readAlignMode) {
         if (! params.skip_dotplot_m2o ) {
-        LAST_DOTPLOT_M2O ( many_to_one_aln, 'png' )
+        LAST_DOTPLOT_M2O ( many_to_one_aln.join(ch_query_seqtk_cutn), 'png', ch_target_seqtk_cutn )
         }
         LAST_SPLIT_O2O   ( many_to_one_aln )
         if (! params.skip_dotplot_o2o ) {
-        LAST_DOTPLOT_O2O ( LAST_SPLIT_O2O.out.maf,  'png' )
+        LAST_DOTPLOT_O2O ( LAST_SPLIT_O2O.out.maf.join(ch_query_seqtk_cutn),  'png', ch_target_seqtk_cutn )
         }
 // Optional postmask step
         if (params.postmask) {
             LAST_POSTMASK  ( LAST_SPLIT_O2O.out.maf )
-            LAST_DOTPLOT_POSTMASK ( LAST_POSTMASK.out.maf, 'png' )
+            LAST_DOTPLOT_POSTMASK ( LAST_POSTMASK.out.maf.join(ch_query_seqtk_cutn), 'png', ch_target_seqtk_cutn )
         }
     }
 }

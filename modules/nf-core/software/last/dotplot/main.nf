@@ -19,8 +19,9 @@ process LAST_DOTPLOT {
     }
 
     input:
-    tuple val(meta), path(maf)
+    tuple val(meta), path(maf), path(bed2)
     val(format)
+    path(bed1)
 
     output:
     tuple val(meta), path("*.gif"), optional:true, emit: gif
@@ -33,6 +34,7 @@ process LAST_DOTPLOT {
     """
     last-dotplot \\
         $options.args \\
+        -a $bed1 -b $bed2 \\
         $maf \\
         $prefix.$format
 

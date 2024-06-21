@@ -88,7 +88,7 @@ if (params.targetName) {
 }
 
 // Find position of N stretches in genomes.  These are contig boundaries in scaffolds
-SEQTK_CUTN_TARGET (target)
+SEQTK_CUTN_TARGET (target.map { meta, file -> [ [id: "${meta.id}.target"], file ] } ) // avoid file collisions
 ch_target_seqtk_cutn = SEQTK_CUTN_TARGET.out.bed.map { id, file -> [ file ] }
 SEQTK_CUTN_QUERY  (query) // before renaming query ids so that file names are proper
 ch_query_seqtk_cutn = SEQTK_CUTN_QUERY.out.bed

@@ -37,6 +37,7 @@ process LAST_LASTAL {
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def trained_params = param_file ? "-p ${param_file}"  : ''
     """
+    set -o pipefail
     INDEX_NAME=\$(basename -s .prj \$(ls $index/*.prj) | sort | head -n1)
     lastal \\
         $trained_params \\

@@ -27,6 +27,11 @@ that indicates in which order they were created.
  - `07.o2o_postmasked_aln` is a filtered _**one-to-one**_ alignment where low-confidence matches made mostly of masked regions are removed. (optional)
  - `08.o2o_postmasked_plot` (optional)
 
+The poly-N regions longer than 9 bases in each genome sequence are marked in
+pale red in the dot-plots.  These often indicate contig boundaries in
+scaffolds.  This is done with `seqtk cutN` and its output is provided in the
+`seqtk` directory.
+
 ## Mandatory parameters
 
  * `--target`: path or URL to one genome file in FASTA format.  It will be indexed.

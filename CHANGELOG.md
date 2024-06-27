@@ -1,3 +1,7 @@
+## 8.4.0
+
+ - Paint poly-N regions in dotplots.  Theses usually are contig boundaries.
+
 ## 8.3.0
 
  - Experimental protein mode triggered when the seed is `PSEUDO`.

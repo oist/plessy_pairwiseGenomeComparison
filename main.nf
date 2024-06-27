@@ -2,9 +2,14 @@
 
 nextflow.enable.dsl = 2
 
-
 // DNA-DNA, many-to-one is the default.
-lastdb_core_args = "-Q0 -u${params.seed} -c -S2"
+
+// In lowmem mode, only one strand is indexed.
+if (! params.lowmem) {
+  lastdb_core_args = "-Q0 -u${params.seed} -c -S2" // index both strands (higher alignment speed, but uses more memory)
+} else {
+  lastdb_core_args = "-Q0 -u${params.seed} -c -S1" // index forward strand only (default lastdb behaviour)
+}
 last_split_args = "${params.last_split_args} -m${params.last_split_mismap}"
 lastal_args = "${params.lastal_args} ${params.lastal_extra_args} --split-m=${params.last_split_mismap} --split-f=MAF+"
 lastal_suffix = '.03.m2o_aln'

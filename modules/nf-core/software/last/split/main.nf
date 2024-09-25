@@ -29,6 +29,7 @@ process LAST_SPLIT {
     def software = getSoftwareName(task.process)
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     """
+    set -o pipefail
     zcat < $maf | last-split $options.args | gzip --no-name > ${prefix}.maf.gz
 
     echo \$(last-split --version 2>&1) | sed 's/last-split //' > ${software}.version.txt

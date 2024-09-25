@@ -1,3 +1,8 @@
+## 8.5.0
+
+ - Recommend the use of <https://github.com/nf-core/pairgenomealign>.
+ - Add a new `--lowmem` option to revert `-S2` to `-S1`.
+
 ## 8.4.0
 
  - Paint poly-N regions in dotplots.  Theses usually are contig boundaries.

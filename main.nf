@@ -52,6 +52,7 @@ include { BLAST_WINDOWMASKER             } from './modules/nf-core/software/blas
 include { SEQTK_CUTN as SEQTK_CUTN_TARGET  } from './modules/nf-core/software/seqtk/cutn/main.nf' addParams( option: ['args': '-n 10'] )
 include { SEQTK_CUTN as SEQTK_CUTN_QUERY   } from './modules/nf-core/software/seqtk/cutn/main.nf' addParams( option: ['args': '-n 10'] )
 include { LAST_LASTDB as LAST_LASTDB_R01 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R01"] )
+include { LAST_LASTDB as LAST_LASTDB_R10 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R10"] )
 include { LAST_LASTDB as LAST_LASTDB_R11 } from './modules/nf-core/software/last/lastdb/main.nf'   addParams( options: ['args': "${lastdb_core_args} -R11"] )
 include { LAST_TRAIN                     } from './modules/nf-core/software/last/train/main.nf'    addParams( options: ['args': "${train_args} ${params.lastal_args}", 'suffix':'.00'])
 include { LAST_LASTAL                    } from './modules/nf-core/software/last/lastal/main.nf'   addParams( options: ['args':lastal_args, 'suffix':lastal_suffix] )
@@ -114,6 +115,9 @@ if (params.targetName) {
     if (params.with_windowmasker) {
         LAST_LASTDB_R11    ( target )
         index = LAST_LASTDB_R11.out.index.map { row -> row[1] }
+    } else if (params.keepOriginalMask) {
+        LAST_LASTDB_R10    ( target )
+        index = LAST_LASTDB_R10.out.index.map { row -> row[1] }
     } else {
         LAST_LASTDB_R01    ( target )
         index = LAST_LASTDB_R01.out.index.map { row -> row[1] }

@@ -1,3 +1,8 @@
+## 8.6.0
+
+ - Allow users to keep original soft-mask with the new option
+   `--keepOriginalMask`
+
 ## 8.5.0
 
  - Recommend the use of <https://github.com/nf-core/pairgenomealign>.

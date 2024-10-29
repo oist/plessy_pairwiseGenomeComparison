@@ -5,6 +5,13 @@
 In 2024 we re-implemented this pipeline as a proper [nf-core pipeline](https://nf-co.re/pairgenomealign).
 Use it unless you need old releases for reproducibility.
 
+## Compatibility
+
+This pipeline uses `addParams` to set module parameters, and it was deprecated
+in Nextflow version `24.10.0`.  Use an older version (for instance `24.04.4`)
+if you want to suppress the deprecation warnings.  Be warned that further
+versions of Nextflow might fail to work with this pipeline.
+
 ## If you use this pipeline, please cite:
 
 We developed this pipeline was used to study _genome scrambling_ in the marine zooplankton 

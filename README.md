@@ -252,6 +252,17 @@ The command `nextflow -c overrideLabels.nf run …` would set the execution time
 limit for the training and alignment (whose module declare the `process_high`
 label) to 3 days instead of the 1 hour default.
 
+## Resource usage
+
+The pipeline aligns two large lungfish genomes, [_Lepidosiren paradoxa_](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040581445.1) (80 Gbp) and [_Protopterus annectens_](https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_040939525.1) (40 Gbp) using at most 200 GB memory.
+
+```
+lastdb        83.8 GB
+last-train    46.4 GB
+lastal --split    174.7 GB
+last-split    63.9 GB
+last-dotplot    5.7 GB
+```
 
 ## Semantic versioning
 
